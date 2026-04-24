@@ -63,7 +63,7 @@ class _SetupPaymentStepState extends State<SetupPaymentStep> {
                 CustomTextFormField(
                   hintText: "1234 5678 9101 1121",
                   controller: cardNumberController,
-                  suffixIcon: const Icon(Icons.credit_card, color: Colors.blue),
+                  suffixIcon: const Icon(Icons.credit_card, color: kPrimaryColor),
                   textInputType: TextInputType.number,
                   validate: (val) => val!.isEmpty ? "Required" : null,
                 ),
@@ -142,12 +142,20 @@ class _SetupPaymentStepState extends State<SetupPaymentStep> {
                   backgroundColor: kPrimaryColor,
                   borderRadius: 12,
                   onPressed: () {
+                    var cubit = AuthCubit.get(context);
                     if (formKey.currentState!.validate()) {
-                      // AuthCubit.get(context).SignupUser();
+                      AuthCubit.get(context).setupProfile(
+                          email: cubit.email ?? '',
+                          password: cubit.password ?? '',
+                          firstName: cubit.firstName ?? '',
+                          lastName: cubit.lastName ?? '',
+                          phone: cubit.phone ?? '',
+                          yearsOfExp: cubit.yearsOfExperience ?? 0,
+                          bio: cubit.bio ?? ''
+                      );
                     }
                   },
                 ),
-                const SizedBox(height: 24),
               ],
             ),
           ),

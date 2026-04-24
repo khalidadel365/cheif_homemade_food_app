@@ -1,5 +1,6 @@
+import 'package:cheif_homemade_food/core/models/profile_model.dart';
+
 import '../../data/models/login_model.dart';
-import '../../data/models/signup_model.dart';
 
 abstract class AuthStates {}
 
@@ -8,8 +9,8 @@ class SignupInitialState extends AuthStates {}
 class SignupLoadingState extends AuthStates {}
 
 class SignupSuccessState extends AuthStates {
-  SignUpModel? authModel;
-  SignupSuccessState(this.authModel);
+  ProfileModel? profileModel;
+  SignupSuccessState(this.profileModel);
 }
 
 class SignupErrorState extends AuthStates {

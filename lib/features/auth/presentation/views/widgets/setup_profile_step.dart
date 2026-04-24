@@ -103,13 +103,13 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                   validate: (val) => val!.isEmpty ? "Required" : null,
                 ),
                 const SizedBox(height: 16),
-                BuildFieldTitle("Brief Kitchen Description/Slogan"),
+                BuildFieldTitle("Bio"),
                 CustomTextFormField(
                   hintTextStyle: Styles.textStyleBold15.copyWith(
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
                   ),
-                  hintText: "Authentic, homemade meals, made with love.",
+                  hintText: "Share your story, culinary skills, or what makes your food unique...",
                   maxLines: 4,
                   controller: descriptionController,
                   validate: (val) => val!.isEmpty ? "Required" : null,
@@ -137,17 +137,16 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                   backgroundColor: kPrimaryColor,
                   borderRadius: 30,
                   onPressed: () {
-                    //if (formKey.currentState!.validate()) {
-                    var cubit = AuthCubit.get(context);
-                    cubit.description = descriptionController.text;
-                    cubit.address = addressController.text;
-
+                    if (formKey.currentState!.validate()) {
+                      var cubit = AuthCubit.get(context);
+                      cubit.bio = descriptionController.text;
+                      cubit.yearsOfExperience = int.parse(experienceController.text);
                     widget.pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                     );
+                  };
                   },
-                  // },
                 ),
                 const SizedBox(height: 20),
               ],

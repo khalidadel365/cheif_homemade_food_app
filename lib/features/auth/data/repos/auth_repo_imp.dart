@@ -1,15 +1,15 @@
+import 'package:cheif_homemade_food/core/models/profile_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utilities/api_service.dart';
 import '../../../../core/utilities/service_locator.dart';
 import '../models/login_model.dart';
-import '../models/signup_model.dart';
 import 'auth_repo.dart';
 
 class AuthRepoImp extends AuthRepo {
   @override
-  Future<Either<Failure, LoginModel>> LoginUser({
+  Future<Either<Failure, LoginModel>> loginUser({
     required String email,
     required String password,
   }) async {
@@ -29,12 +29,15 @@ class AuthRepoImp extends AuthRepo {
   }
 
   @override
-  Future<Either<Failure, SignUpModel>> SignupUser({
+  Future<Either<Failure, ProfileModel>> setupProfile({
     required String? email,
     required String? password,
     required String? firstName,
     required String? lastName,
     required String? phone,
+    required int yearsOfExp,
+    required String bio,
+    String? address = '21 Street',
   }) async {
     try {
       var response = await getIt.get<ApiService>().postData(
@@ -45,12 +48,14 @@ class AuthRepoImp extends AuthRepo {
           'email': email,
           'password': password,
           'phone_number': phone,
+          'bio': bio,
+          'years_of_experience':yearsOfExp,
           'address_longitude': 1.556,
           'address_latitude': 5.66,
           'user_type': "chef",
         },
       );
-      return right(SignUpModel.fromJson(response?.data));
+      return right(ProfileModel.fromJson(response?.data));
     } on Exception catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
