@@ -11,12 +11,11 @@ abstract class AppRouter {
   static const kLoginView = '/loginView';
   static const kSignUpView = '/signUpView';
   static const kSplashScreen = '/splashView';
-  static final router = GoRouter(routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const SplashView(),
-    ),
-    GoRoute(path: kLoginView, builder: (context, state) => LoginView()),
-    GoRoute(path: kSignUpView, builder: (context, state) => SignupView()),
-  ]);
+  static final router = GoRouter(
+    routes: [
+      GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(path: kLoginView, builder: (context, state) => LoginView()),
+      GoRoute(path: kSignUpView, builder: (context, state) => SignupView()),
+    ],
+  );
 }

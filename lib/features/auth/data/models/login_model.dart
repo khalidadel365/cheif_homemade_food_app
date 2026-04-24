@@ -7,7 +7,10 @@ class LoginModel {
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(
       token: json['token'],
-      profileData: json['profile'] != null ? ProfileData.fromJson(json['profile']) : null,
+      profileData:
+          json['profile'] != null
+              ? ProfileData.fromJson(json['profile'])
+              : null,
     );
   }
 }
@@ -17,17 +20,17 @@ class ProfileData {
   final AccountInfo? accountInfo;
   final int? total_orders;
 
-
   ProfileData({
     required this.id,
     required this.accountInfo,
-    required this.total_orders
+    required this.total_orders,
   });
 
   factory ProfileData.fromJson(Map<String, dynamic> json) {
     return ProfileData(
       id: json['id'],
-      accountInfo: json['user'] != null ? AccountInfo.fromJson(json['user']) : null,
+      accountInfo:
+          json['user'] != null ? AccountInfo.fromJson(json['user']) : null,
       total_orders: json['total_orders'] ?? 0,
     );
   }
@@ -45,15 +48,16 @@ class AccountInfo {
   final String? userType;
 
   AccountInfo({
-  this.firstName,
-  this.lastName,
-  this.email,
-  this.phone,
-  this.profilePicUrl,
-  this.address_longitude,
-  this.address_latitude,
-  this.userType,
-  this.isActive,});
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phone,
+    this.profilePicUrl,
+    this.address_longitude,
+    this.address_latitude,
+    this.userType,
+    this.isActive,
+  });
   factory AccountInfo.fromJson(Map<String, dynamic> json) {
     return AccountInfo(
       firstName: json['first_name'],

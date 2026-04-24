@@ -18,7 +18,6 @@ void main() {
 }
 
 class CheifHomeMadeFood extends StatelessWidget {
-
   const CheifHomeMadeFood({super.key});
 
   @override
@@ -26,12 +25,12 @@ class CheifHomeMadeFood extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthCubit(getIt.get<AuthRepoImp>()),
       child: MaterialApp.router(
-          routerConfig: AppRouter.router,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: kBackGroundColor,
-            fontFamily: kFontFamily,
-          )
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: kBackGroundColor,
+          fontFamily: kFontFamily,
+        ),
       ),
     );
   }

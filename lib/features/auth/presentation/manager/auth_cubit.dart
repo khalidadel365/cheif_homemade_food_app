@@ -13,37 +13,48 @@ class AuthCubit extends Cubit<AuthStates> {
   final AuthRepo authRepo;
   String? email, password, firstName, lastName, phone;
   String? description, address;
-
-  Future<void> SignupUser({
-    required String? email,
-    required String? password,
-    required String? firstName,
-    required String? lastName,
-    required String? phone,
+  int? yearsOfExperience;
+  Future<void> SetupProfile({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required int yearsOfExp,
+    required String description,
+    String? address = '21 Street',
   }) async {
     emit(SignupLoadingState());
     Either<Failure, SignUpModel> result = await authRepo.SignupUser(
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone);
-    result.fold((failure) {
-      emit(SignupErrorState(failure.errorMessage));
-    }, (signupModel) {
-      emit(SignupSuccessState(signupModel));
-    });
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+    );
+    result.fold(
+      (failure) {
+        emit(SignupErrorState(failure.errorMessage));
+      },
+      (signupModel) {
+        emit(SignupSuccessState(signupModel));
+      },
+    );
   }
+
   Future<void> LoginUser({
     required String email,
-    required String password
-})async{
+    required String password,
+  }) async {
     emit(LoginLoadingState());
     var result = await authRepo.LoginUser(email: email, password: password);
-    result.fold((failure){
-      emit(LoginErrorState(failure.errorMessage));
-    }, (loginModel){
-      emit(LoginSuccessState(loginModel));
-    });
+    result.fold(
+      (failure) {
+        emit(LoginErrorState(failure.errorMessage));
+      },
+      (loginModel) {
+        emit(LoginSuccessState(loginModel));
+      },
+    );
   }
 }

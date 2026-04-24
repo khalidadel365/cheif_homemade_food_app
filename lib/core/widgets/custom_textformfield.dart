@@ -3,25 +3,28 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField(
-      {required this.controller,
-      this.validate,
-      this.prefixIcon,
-      this.hintText,
-      this.onChange,
-      this.onSubmit,
-      this.obsecureText = false,
-      this.circularRadius,
-      this.verticalPadding,
-      this.horizontalPadding,
-      this.maxLines,
-      this.textInputType,
-      this.cursorHeight,
-      this.cursorWidth,
-      this.hintTextStyle});
+  const CustomTextFormField({
+    required this.controller,
+    this.validate,
+    this.prefixIcon,
+    this.hintText,
+    this.onChange,
+    this.onSubmit,
+    this.obsecureText = false,
+    this.circularRadius,
+    this.verticalPadding,
+    this.horizontalPadding,
+    this.maxLines,
+    this.textInputType,
+    this.cursorHeight,
+    this.cursorWidth,
+    this.suffixIcon,
+    this.hintTextStyle,
+  });
 
   final String? hintText;
   final Icon? prefixIcon;
+  final Icon? suffixIcon;
   final bool obsecureText;
   final Function(String)? onChange;
   final Function(String)? onSubmit;
@@ -47,10 +50,12 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChange,
       cursorColor: kPrimaryColor,
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
         isDense: true,
         contentPadding: EdgeInsets.symmetric(
-            vertical: verticalPadding ?? 15,
-            horizontal: horizontalPadding ?? 8),
+          vertical: verticalPadding ?? 15,
+          horizontal: horizontalPadding ?? 8,
+        ),
         hintText: "$hintText",
         hintStyle: hintTextStyle,
         prefixIcon: prefixIcon != null ? prefixIcon : null,

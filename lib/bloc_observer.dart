@@ -24,6 +24,7 @@ class MyBlocObserver extends BlocObserver {
     super.onClose(bloc);
     print('onClose -- ${bloc.runtimeType}');
   }
+
   @override
   void onTransition(Bloc bloc, Transition transition) {
     // TODO: implement onTransition

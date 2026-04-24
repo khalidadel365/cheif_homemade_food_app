@@ -39,17 +39,15 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           padding: EdgeInsets.symmetric(
-              vertical: verticalPadding ?? 0,
-              horizontal: horizontalPadding ?? 0),
+            vertical: verticalPadding ?? 0,
+            horizontal: horizontalPadding ?? 0,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius!),
           ),
           elevation: elevation,
         ),
-        child: icon ?? Text(
-          "$text",
-          style: textStyle,
-        ),
+        child: icon ?? Text("$text", style: textStyle),
       ),
     );
   }
