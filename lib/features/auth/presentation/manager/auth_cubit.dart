@@ -11,6 +11,8 @@ class AuthCubit extends Cubit<AuthStates> {
   static AuthCubit get(context) => BlocProvider.of(context);
 
   final AuthRepo authRepo;
+  String? email, password, firstName, lastName, phone;
+  String? description, address;
 
   Future<void> SignupUser({
     required String? email,

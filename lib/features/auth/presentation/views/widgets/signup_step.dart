@@ -8,10 +8,11 @@ import '../../../../../core/utilities/styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_textformfield.dart';
 import '../../manager/auth_cubit.dart';
+
 class SignUpViewBody extends StatefulWidget {
-  const SignUpViewBody({
-    super.key,
-  });
+  final PageController pageController;
+
+  const SignUpViewBody({super.key, required this.pageController});
 
   @override
   State<SignUpViewBody> createState() => _SignUpViewBodyState();
@@ -59,18 +60,18 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                AssetsData.logo,
-                height: 100,
-              ),
+              Image.asset(AssetsData.logo, height: 100),
               const SizedBox(height: 5),
               Text("Create Account", style: Styles.textStyle28),
               const SizedBox(height: 15),
               //first name text field
               CustomTextFormField(
                 hintText: "First Name",
-                prefixIcon: Icon(Icons.person_outline, size: 23,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  size: 23,
+                  color: Colors.grey.shade700,
+                ),
                 validate: (value) {
                   if (value.isEmpty) {
                     return 'First name must not be empty';
@@ -83,8 +84,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               //last name text field
               CustomTextFormField(
                 hintText: "Last Name",
-                prefixIcon: Icon(Icons.person_outline,size: 23,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  size: 23,
+                  color: Colors.grey.shade700,
+                ),
                 validate: (value) {
                   if (value.isEmpty) {
                     return 'Last name must not be empty';
@@ -97,8 +101,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               // phone text field
               CustomTextFormField(
                 hintText: "Phone Number",
-                prefixIcon: Icon(Icons.phone_outlined,size: 23,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.phone_outlined,
+                  size: 23,
+                  color: Colors.grey.shade700,
+                ),
                 validate: (value) {
                   if (value.isEmpty) {
                     return 'Phone number must not be empty';
@@ -111,8 +118,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               // email text field
               CustomTextFormField(
                 hintText: "Email Address",
-                prefixIcon: Icon(Icons.email_outlined,size: 22,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  size: 22,
+                  color: Colors.grey.shade700,
+                ),
                 validate: (value) {
                   if (value.isEmpty) {
                     return 'Email must not be empty';
@@ -125,8 +135,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               // password text field
               CustomTextFormField(
                 hintText: "Password",
-                prefixIcon: Icon(Icons.lock_outline,size: 22,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  size: 22,
+                  color: Colors.grey.shade700,
+                ),
                 obsecureText: true,
                 validate: (value) {
                   if (value.isEmpty) {
@@ -140,8 +153,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               // confirm Password text field
               CustomTextFormField(
                 hintText: "Confirm Password",
-                prefixIcon: Icon(Icons.lock_outline,size: 22,
-                  color: Colors.grey.shade700,),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  size: 22,
+                  color: Colors.grey.shade700,
+                ),
                 controller: confirmPasswordController,
                 obsecureText: true,
                 validate: (value) {
@@ -156,24 +172,26 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
               const SizedBox(height: 20),
               // sign up button
               CustomButton(
-                  width: double.infinity,
-                  height: 53,
-                  backgroundColor: kPrimaryColor,
-                  borderRadius: 12,
-                  text: 'Sign Up',
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      AuthCubit.get(context).SignupUser(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          firstName: firstNameController.text,
-                          lastName: lastNameController.text,
-                          phone: phoneController.text);
-                    } else {
-                      print('wrong');
-                    }
-                  },
-                  textStyle: Styles.textStyle18.copyWith(color: Colors.white)
+                width: double.infinity,
+                height: 53,
+                backgroundColor: kPrimaryColor,
+                borderRadius: 12,
+                text: 'Sign Up',
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    var cubit = AuthCubit.get(context);
+                    cubit.email = emailController.text;
+                    cubit.password = passwordController.text;
+                    cubit.firstName = firstNameController.text;
+                    cubit.lastName = lastNameController.text;
+                    cubit.phone = phoneController.text;
+                    widget.pageController.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  }
+                },
+                textStyle: Styles.textStyle18.copyWith(color: Colors.white),
               ),
               const SizedBox(height: 10),
               Row(
@@ -184,13 +202,10 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
                     onPressed: () {
                       GoRouter.of(context).go(AppRouter.kLoginView);
                     },
-                    child: Text(
-                      "Login",
-                      style: Styles.textStyleBold15
-                    ),
-                  )
+                    child: Text("Login", style: Styles.textStyleBold15),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
