@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,42 +53,27 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
               children: [
                 //image
                 Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: CircleAvatar(
-                          radius: 55,
-                          backgroundColor: kPrimaryColor.withOpacity(0.05),
-                          child: const Icon(
-                            Icons.add_a_photo_outlined,
-                            size: 40,
-                            color: kPrimaryColor,
-                          ),
-                        ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(30),
+                    child: Container(
+                      height: 95,
+                      width: 95,
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        placeholder:
+                            (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: kPrimaryColor,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                        errorWidget:
+                            (context, url, error) => const Icon(Icons.person),
+                        imageUrl:
+                            'https://res.cloudinary.com/dljw6q0yq/image/upload/v1777041924/profilepicture_mae8dg.jpg',
                       ),
-                      const SizedBox(height: 12),
-                      TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          backgroundColor: kPrimaryColor.withOpacity(0.08),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          "Upload Photo",
-                          style: TextStyle(
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -100,7 +86,7 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                   ),
                   controller: experienceController,
                   textInputType: TextInputType.number,
-                  validate: (val) => val!.isEmpty ? "Required" : null,
+                  validate: (val) => val!.isEmpty ? "Years of experience is required" : null,
                 ),
                 const SizedBox(height: 16),
                 BuildFieldTitle("Bio"),
@@ -109,10 +95,11 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
                   ),
-                  hintText: "Share your story, culinary skills, or what makes your food unique...",
+                  hintText:
+                      "Share your story, culinary skills, or what makes your food unique...",
                   maxLines: 4,
                   controller: descriptionController,
-                  validate: (val) => val!.isEmpty ? "Required" : null,
+                  validate: (val) => val!.isEmpty ? "Bio is Required" : null,
                 ),
                 const SizedBox(height: 16),
                 BuildFieldTitle("Full Address"),
@@ -123,7 +110,7 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                     color: Colors.grey,
                   ),
                   controller: addressController,
-                  validate: (val) => val!.isEmpty ? "Required" : null,
+                  validate: (val) => val!.isEmpty ? "Address is required" : null,
                 ),
                 const SizedBox(height: 40),
                 CustomButton(
@@ -140,12 +127,15 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                     if (formKey.currentState!.validate()) {
                       var cubit = AuthCubit.get(context);
                       cubit.bio = descriptionController.text;
-                      cubit.yearsOfExperience = int.parse(experienceController.text);
-                    widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  };
+                      cubit.yearsOfExperience = int.parse(
+                        experienceController.text,
+                      );
+                      widget.pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                    ;
                   },
                 ),
                 const SizedBox(height: 20),

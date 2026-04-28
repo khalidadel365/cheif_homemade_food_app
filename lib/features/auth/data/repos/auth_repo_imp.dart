@@ -1,6 +1,7 @@
 import 'package:cheif_homemade_food/core/models/profile_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utilities/api_service.dart';
 import '../../../../core/utilities/service_locator.dart';
@@ -25,6 +26,33 @@ class AuthRepoImp extends AuthRepo {
       } else {
         return left(ServerFailure(e.toString()));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccountInfo>> updateProfileImage(
+      {required String token, required XFile imageProfile}) async {
+    final multipartFile = await MultipartFile.fromFile(
+      imageProfile.path,
+      filename: imageProfile.name,
+    );
+    try {
+      final res = await getIt.get<ApiService>().postData(
+        endpoint: '/api/auth/profile-picture/',
+        data: FormData.fromMap({
+          'profile_picture': multipartFile,
+        }),
+        token: token,
+      );
+
+      final accountInfoModel = AccountInfo.fromJson(res!.data);
+
+      return right(accountInfoModel);
+    } on DioException catch (e) {
+      print(e.toString());
+      return left(ServerFailure.fromDioException(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
     }
   }
 

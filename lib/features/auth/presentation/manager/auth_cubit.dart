@@ -1,8 +1,10 @@
 import 'package:cheif_homemade_food/core/models/profile_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/utilities/api_constants.dart';
 import '../../data/repos/auth_repo.dart';
 import 'auth_states.dart';
 
@@ -57,8 +59,22 @@ class AuthCubit extends Cubit<AuthStates> {
         emit(LoginErrorState(failure.errorMessage));
       },
       (loginModel) {
+        ApiConstants.token = loginModel.token!;
         emit(LoginSuccessState(loginModel));
       },
     );
+  }
+  Future<void> updateProfileImage(
+      {required String token, required XFile imageProfile}) async {
+    emit(UpdateProfileImageLoading());
+    var result = await authRepo.updateProfileImage(
+      token: token,
+      imageProfile: imageProfile,
+    );
+    result.fold((failure) {
+      emit(UpdateProfileImageFailure(failure.errorMessage));
+    }, (accountInfo) {
+      emit(UpdateProfileImageSuccess(accountInfo));
+    });
   }
 }

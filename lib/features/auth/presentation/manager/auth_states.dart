@@ -31,3 +31,14 @@ class LoginErrorState extends AuthStates {
   final String error;
   LoginErrorState(this.error);
 }
+class UpdateProfileImageLoading extends AuthStates {}
+
+class UpdateProfileImageFailure extends AuthStates {
+  final String errMessage;
+  UpdateProfileImageFailure(this.errMessage);
+}
+
+class UpdateProfileImageSuccess extends AuthStates {
+  AccountInfo accountInfo;
+  UpdateProfileImageSuccess(this.accountInfo);
+}
