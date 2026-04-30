@@ -1,5 +1,6 @@
 import 'package:cheif_homemade_food/core/models/profile_model.dart';
 
+import '../../../../core/models/account_info.dart';
 import '../../data/models/login_model.dart';
 
 abstract class AuthStates {}

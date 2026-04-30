@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../../core/models/account_info.dart';
 import '../../../../core/utilities/api_service.dart';
 import '../../../../core/utilities/service_locator.dart';
 import '../models/login_model.dart';
