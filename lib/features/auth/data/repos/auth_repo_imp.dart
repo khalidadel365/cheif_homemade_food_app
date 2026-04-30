@@ -8,7 +8,7 @@ import '../../../../core/utilities/service_locator.dart';
 import '../models/login_model.dart';
 import 'auth_repo.dart';
 
-class AuthRepoImp extends AuthRepo {
+class AuthRepoImp implements AuthRepo {
   @override
   Future<Either<Failure, LoginModel>> loginUser({
     required String email,
