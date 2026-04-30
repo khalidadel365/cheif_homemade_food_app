@@ -18,20 +18,14 @@ abstract class Styles {
     color: Colors.deepOrange,
     fontSize: 15,
   );
-  /*  static const  textStyle20 = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.normal,
+  static var textStyle12 = TextStyle(fontSize: 12);
+  static var textStyle15 = TextStyle(fontSize: 15);
+  static var textStyle19 = TextStyle(fontSize: 19, fontWeight: FontWeight.w600);
+
+  static var textStyle25 = TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
+  static var textStyle23 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold);
+  static var textStyleBold = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Colors.deepOrange,
   );
-  static const  textStyle30 = TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.normal,
-  );
-  static const  textStyle14 = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
-  );
-  static const  textStyle16 = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-  );*/
 }
