@@ -67,4 +67,24 @@ class ApiService {
       queryParameters: query,
     );
   }
+  Future<dynamic> delete({
+    required String endPoint,
+    Map<String, dynamic>? queryParameters,
+    String? token,
+    dynamic data,
+  }) async {
+
+    dio?.options.headers = {
+      if (token != null) 'Authorization': 'Token $token',
+      'Content-Type': 'application/json',
+    };
+
+    final response = await dio?.delete(
+      endPoint,
+      queryParameters: queryParameters,
+      data: data,
+    );
+
+    return response?.data;
+  }
 }

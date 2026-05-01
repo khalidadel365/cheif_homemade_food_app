@@ -25,4 +25,21 @@ class HomeRepoImp implements HomeRepo {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteChefDish({required String token, required int dishId})async {
+    try {
+      var response = await getIt.get<ApiService>().delete(
+        endPoint: '/api/dishes/chef/$dishId/',
+        token: token,
+      );
+      return right(null);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
+    }
+  }
 }

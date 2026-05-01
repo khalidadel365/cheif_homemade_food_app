@@ -61,7 +61,7 @@ class HomeViewBody extends StatelessWidget {
                     if (state is GetChefDishesSuccessState) {
                       return state.dishes.isEmpty
                           ? const Center(child: Text("You can add your first dish"))
-                          : DishesTabView(dishes: state.dishes!);
+                          : DishesTabView(dishes: state.dishes);
                     } else if (state is GetChefDishesErrorState) {
                       return Center(child: Text(state.error));
                     } else {

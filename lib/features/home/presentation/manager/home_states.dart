@@ -1,4 +1,3 @@
-
 import '../../../../core/models/dish_model.dart';
 
 abstract class HomeStates {}
@@ -9,10 +8,32 @@ class GetChefDishesLoadingState extends HomeStates {}
 
 class GetChefDishesSuccessState extends HomeStates {
   final List<DishModel> dishes;
+
   GetChefDishesSuccessState(this.dishes);
 }
 
 class GetChefDishesErrorState extends HomeStates {
   final String error;
+
   GetChefDishesErrorState(this.error);
+}
+
+class DeleteChefDishInitialState extends HomeStates {}
+
+class DeleteChefDishLoadingState extends HomeStates {
+  final int dishId;
+
+  DeleteChefDishLoadingState(this.dishId);
+}
+
+class DeleteChefDishSuccessState extends HomeStates {
+  final int dishId;
+
+  DeleteChefDishSuccessState(this.dishId);
+}
+
+class DeleteChefDishErrorState extends HomeStates {
+  final String error;
+
+  DeleteChefDishErrorState(this.error);
 }

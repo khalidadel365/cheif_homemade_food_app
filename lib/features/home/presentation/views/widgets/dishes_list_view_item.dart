@@ -1,8 +1,11 @@
-import 'package:cheif_homemade_food/constants.dart';
+import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../constants.dart';
 import '../../../../../core/models/dish_model.dart';
 import '../../../../../core/utilities/styles.dart';
+import '../../manager/home_cubit.dart';
+import '../../manager/home_states.dart';
 
 class DishesListViewItem extends StatelessWidget {
   final DishModel dish;
@@ -63,7 +66,6 @@ class DishesListViewItem extends StatelessWidget {
                       child: Transform.scale(
                         scale: 0.7,
                         child: Switch(
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           value: dish.isAvailable ?? false,
                           onChanged: (val) {},
                           activeColor: Colors.white,
@@ -85,20 +87,37 @@ class DishesListViewItem extends StatelessWidget {
             ),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined, size: 20, color: Colors.black),
               ),
               const SizedBox(height: 25),
-              IconButton(
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                onPressed: () {},
-                icon: const Icon(Icons.delete_outline, size: 22, color: Colors.redAccent),
+
+              BlocBuilder<HomeCubit, HomeStates>(
+                buildWhen: (prev, curr) =>
+                (curr is DeleteChefDishLoadingState && curr.dishId == dish.id) ||
+                    (curr is DeleteChefDishErrorState) ||
+                    (curr is DeleteChefDishSuccessState && curr.dishId == dish.id),
+                builder: (context, state) {
+                  if (state is DeleteChefDishLoadingState && state.dishId == dish.id) {
+                    return const SizedBox(
+                      height: 22, width: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.redAccent),
+                    );
+                  }
+                  return IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      context.read<HomeCubit>().deleteDish(
+                        token: ApiConstants.token!,
+                        dishId: dish.id!,
+                      );
+                    },
+                    icon: const Icon(Icons.delete_outline, size: 22, color: Colors.redAccent),
+                  );
+                },
               ),
             ],
           ),
