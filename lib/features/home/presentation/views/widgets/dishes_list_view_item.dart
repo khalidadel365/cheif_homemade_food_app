@@ -102,7 +102,7 @@ class DishesListViewItem extends StatelessWidget {
                 builder: (context, state) {
                   if (state is DeleteChefDishLoadingState && state.dishId == dish.id) {
                     return const SizedBox(
-                      height: 22, width: 22,
+                      height: 17, width: 17,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.redAccent),
                     );
                   }

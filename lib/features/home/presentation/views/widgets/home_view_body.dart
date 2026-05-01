@@ -57,6 +57,11 @@ class HomeViewBody extends StatelessWidget {
             child: TabBarView(
               children: [
                 BlocBuilder<HomeCubit, HomeStates>(
+                  buildWhen: (previous, current) {
+                    return current is GetChefDishesSuccessState ||
+                        current is GetChefDishesErrorState ||
+                        current is GetChefDishesLoadingState;
+                  },
                   builder: (context, state) {
                     if (state is GetChefDishesSuccessState) {
                       return state.dishes.isEmpty
@@ -65,7 +70,9 @@ class HomeViewBody extends StatelessWidget {
                     } else if (state is GetChefDishesErrorState) {
                       return Center(child: Text(state.error));
                     } else {
-                      return const Center(child: SpinKitPulse(size: 45, color: kPrimaryColor),);
+                      return const Center(
+                        child: SpinKitPulse(size: 45, color: kPrimaryColor),
+                      );
                     }
                   },
                 ),
