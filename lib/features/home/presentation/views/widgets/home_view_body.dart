@@ -1,9 +1,12 @@
+import 'package:cheif_homemade_food/constants.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/home_cubit.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/home_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cheif_homemade_food/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../../../../../core/utilities/api_constants.dart';
+import '../../../../../core/utilities/functions/show_snack_bar.dart';
+import '../../../../../core/utilities/styles.dart';
 import 'dishes_tab_view.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -13,75 +16,123 @@ class HomeViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Container(
-              height: 50,
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: TabBar(
-                overlayColor: WidgetStateProperty.all(Colors.transparent),
-                enableFeedback: false,
-                splashFactory: NoSplash.splashFactory,
-                padding: EdgeInsets.zero,
-                dividerColor: Colors.transparent,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 4,
-                    ),
+      child: BlocListener<HomeCubit, HomeStates>(
+        listenWhen:
+            (previous, current) =>
+                current is DeleteChefDishErrorState ||
+                current is ChangeDishAvailabilityErrorState,
+        listener: (context, state) {
+          if (state is DeleteChefDishErrorState) {
+            showSnackBar(
+              context: context,
+              message: 'Error while deleting dish',
+              color: Colors.red,
+            );
+          } else if (state is ChangeDishAvailabilityErrorState) {
+            showSnackBar(
+              context: context,
+              message: 'Error while changing status of your dish',
+              color: Colors.red,
+            );
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Container(
+                height: 50,
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: TabBar(
+                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                  enableFeedback: false,
+                  splashFactory: NoSplash.splashFactory,
+                  padding: EdgeInsets.zero,
+                  dividerColor: Colors.transparent,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  labelColor: kPrimaryColor,
+                  unselectedLabelColor: Colors.grey[500],
+                  labelStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  tabs: const [
+                    Tab(text: "Dishes"),
+                    Tab(text: "Incoming"),
+                    Tab(text: "Preparing"),
                   ],
                 ),
-                labelColor: kPrimaryColor,
-                unselectedLabelColor: Colors.grey[500],
-                labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                tabs: const [
-                  Tab(text: "Dishes"),
-                  Tab(text: "Incoming"),
-                  Tab(text: "Preparing"),
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  BlocBuilder<HomeCubit, HomeStates>(
+                    buildWhen: (previous, current) {
+                      return current is GetChefDishesSuccessState ||
+                          current is GetChefDishesErrorState ||
+                          current is GetChefDishesLoadingState;
+                    },
+                    builder: (context, state) {
+                      if (state is GetChefDishesSuccessState) {
+                        return state.dishes.isEmpty
+                            ? const Center(
+                              child: Text("You can add your first dish"),
+                            )
+                            : DishesTabView(dishes: state.dishes);
+                      } else if (state is GetChefDishesErrorState) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(state.error, style: Styles.textStyle16),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<HomeCubit>().getChefDishes(
+                                    token: ApiConstants.token!,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kPrimaryColor,
+                                ),
+                                child: const Text(
+                                  "Try Again",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: SpinKitPulse(size: 45, color: kPrimaryColor),
+                        );
+                      }
+                    },
+                  ),
+                  const Center(child: Text("Incoming")),
+                  const Center(child: Text("Preparing")),
                 ],
               ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              children: [
-                BlocBuilder<HomeCubit, HomeStates>(
-                  buildWhen: (previous, current) {
-                    return current is GetChefDishesSuccessState ||
-                        current is GetChefDishesErrorState ||
-                        current is GetChefDishesLoadingState;
-                  },
-                  builder: (context, state) {
-                    if (state is GetChefDishesSuccessState) {
-                      return state.dishes.isEmpty
-                          ? const Center(child: Text("You can add your first dish"))
-                          : DishesTabView(dishes: state.dishes);
-                    } else if (state is GetChefDishesErrorState) {
-                      return Center(child: Text(state.error));
-                    } else {
-                      return const Center(
-                        child: SpinKitPulse(size: 45, color: kPrimaryColor),
-                      );
-                    }
-                  },
-                ),
-                const Center(child: Text("Incoming")),
-                const Center(child: Text("Preparing")),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

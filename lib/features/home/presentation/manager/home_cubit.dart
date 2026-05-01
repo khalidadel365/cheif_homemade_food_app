@@ -23,19 +23,40 @@ class HomeCubit extends Cubit<HomeStates> {
 
   Future<void> deleteDish({required String token, required int dishId}) async {
     emit(DeleteChefDishLoadingState(dishId));
-
     var result = await homeRepo.deleteChefDish(token: token, dishId: dishId);
-
     result.fold(
-          (failure) {
-        emit(DeleteChefDishErrorState(failure.errorMessage));
-      },
+          (failure) => emit(DeleteChefDishErrorState(failure.errorMessage)),
           (_) {
         chefDishes.removeWhere((element) => element.id == dishId);
-
-      //to stop loading then put the the new list
         emit(DeleteChefDishSuccessState(dishId));
-        emit(GetChefDishesSuccessState(chefDishes));
+        emit(GetChefDishesSuccessState(List.from(chefDishes)));
+      },
+    );
+  }
+
+  Future<void> changeDishAvailability({
+    required String token,
+    required int dishId,
+    required bool isAvailable,
+  }) async {
+    emit(ChangeDishAvailabilityLoadingState(dishId));
+
+    var result = await homeRepo.changeDishAvailability(
+      token: token,
+      dishId: dishId,
+      isAvailable: isAvailable,
+    );
+
+    result.fold(
+          (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
+          (updatedDish) {
+        int index = chefDishes.indexWhere((element) => element.id == dishId);
+        if (index != -1) {
+          chefDishes[index] = updatedDish;
+        }
+
+        emit(ChangeDishAvailabilitySuccessState(updatedDish));
+        emit(GetChefDishesSuccessState(List.from(chefDishes)));
       },
     );
   }

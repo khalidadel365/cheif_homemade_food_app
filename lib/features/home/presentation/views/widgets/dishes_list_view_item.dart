@@ -60,18 +60,51 @@ class DishesListViewItem extends StatelessWidget {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    SizedBox(
-                      height: 20,
-                      width: 40,
-                      child: Transform.scale(
-                        scale: 0.7,
-                        child: Switch(
-                          value: dish.isAvailable ?? false,
-                          onChanged: (val) {},
-                          activeColor: Colors.white,
-                          activeTrackColor: kPrimaryColor,
-                        ),
-                      ),
+                    BlocBuilder<HomeCubit, HomeStates>(
+                      buildWhen: (prev, curr) =>
+                      (curr is ChangeDishAvailabilityLoadingState && curr.dishId == dish.id) ||
+                          (curr is ChangeDishAvailabilitySuccessState && curr.updatedDish.id == dish.id) ||
+                          (curr is ChangeDishAvailabilityErrorState),
+                      builder: (context, state) {
+                        if (state is ChangeDishAvailabilityLoadingState && state.dishId == dish.id) {
+                          return const SizedBox(
+                            height: 20,
+                            width: 40,
+                            child: Center(
+                              child: SizedBox(
+                                height: 14,
+                                width: 14,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: kPrimaryColor),
+                              ),
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          height: 15,
+                          width: 40,
+                          child: Transform.scale(
+                            scale: 0.7,
+                            child: Switch(
+                              trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                              thumbColor: WidgetStateProperty.all(Colors.white),
+                              activeTrackColor: kPrimaryColor,
+                              trackOutlineWidth: WidgetStateProperty.all(0),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              value: dish.isAvailable ?? false,
+                              onChanged: (val) {
+                                context.read<HomeCubit>().changeDishAvailability(
+                                  token: ApiConstants.token!,
+                                  dishId: dish.id!,
+                                  isAvailable: val,
+                                );
+                              },
+                              activeColor: Colors.white,
+                              inactiveTrackColor: Colors.grey[300],
+
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -93,7 +126,6 @@ class DishesListViewItem extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined, size: 20, color: Colors.black),
               ),
               const SizedBox(height: 25),
-
               BlocBuilder<HomeCubit, HomeStates>(
                 buildWhen: (prev, curr) =>
                 (curr is DeleteChefDishLoadingState && curr.dishId == dish.id) ||
@@ -102,7 +134,8 @@ class DishesListViewItem extends StatelessWidget {
                 builder: (context, state) {
                   if (state is DeleteChefDishLoadingState && state.dishId == dish.id) {
                     return const SizedBox(
-                      height: 17, width: 17,
+                      height: 17,
+                      width: 17,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.redAccent),
                     );
                   }

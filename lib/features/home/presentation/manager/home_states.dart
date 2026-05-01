@@ -37,3 +37,21 @@ class DeleteChefDishErrorState extends HomeStates {
 
   DeleteChefDishErrorState(this.error);
 }
+
+
+class ChangeDishAvailabilityInitialState extends HomeStates {}
+
+class ChangeDishAvailabilityLoadingState extends HomeStates {
+  final int dishId;
+  ChangeDishAvailabilityLoadingState(this.dishId);
+}
+
+class ChangeDishAvailabilitySuccessState extends HomeStates {
+  final DishModel updatedDish;
+  ChangeDishAvailabilitySuccessState(this.updatedDish);
+}
+
+class ChangeDishAvailabilityErrorState extends HomeStates {
+  final String error;
+  ChangeDishAvailabilityErrorState(this.error);
+}
