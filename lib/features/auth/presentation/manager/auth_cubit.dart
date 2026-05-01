@@ -66,17 +66,23 @@ class AuthCubit extends Cubit<AuthStates> {
       },
     );
   }
-  Future<void> updateProfileImage(
-      {required String token, required XFile imageProfile}) async {
+
+  Future<void> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  }) async {
     emit(UpdateProfileImageLoading());
     var result = await authRepo.updateProfileImage(
       token: token,
       imageProfile: imageProfile,
     );
-    result.fold((failure) {
-      emit(UpdateProfileImageFailure(failure.errorMessage));
-    }, (accountInfo) {
-      emit(UpdateProfileImageSuccess(accountInfo));
-    });
+    result.fold(
+      (failure) {
+        emit(UpdateProfileImageFailure(failure.errorMessage));
+      },
+      (accountInfo) {
+        emit(UpdateProfileImageSuccess(accountInfo));
+      },
+    );
   }
 }

@@ -86,7 +86,11 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                   ),
                   controller: experienceController,
                   textInputType: TextInputType.number,
-                  validate: (val) => val!.isEmpty ? "Years of experience is required" : null,
+                  validate:
+                      (val) =>
+                          val!.isEmpty
+                              ? "Years of experience is required"
+                              : null,
                 ),
                 const SizedBox(height: 16),
                 BuildFieldTitle("Bio"),
@@ -110,7 +114,8 @@ class _SetupProfileStepState extends State<SetupProfileStep> {
                     color: Colors.grey,
                   ),
                   controller: addressController,
-                  validate: (val) => val!.isEmpty ? "Address is required" : null,
+                  validate:
+                      (val) => val!.isEmpty ? "Address is required" : null,
                 ),
                 const SizedBox(height: 40),
                 CustomButton(

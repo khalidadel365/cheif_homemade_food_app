@@ -16,16 +16,16 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(getIt.get<HomeRepoImp>())..getChefDishes(token: ApiConstants.token!),
+      create:
+          (context) =>
+              HomeCubit(getIt.get<HomeRepoImp>())
+                ..getChefDishes(token: ApiConstants.token!),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kBackGroundColor,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1.0),
-            child: Container(
-              color: Colors.grey.withOpacity(0.3),
-              height: 1.0,
-            ),
+            child: Container(color: Colors.grey.withOpacity(0.3), height: 1.0),
           ),
           actionsPadding: const EdgeInsets.symmetric(horizontal: 7),
           title: Text('My Menu', style: Styles.textStyle23),
@@ -35,10 +35,7 @@ class HomeView extends StatelessWidget {
               onPressed: () {
                 GoRouter.of(context).push(AppRouter.kProfileView);
               },
-              icon: const Icon(
-                Icons.account_circle_outlined,
-                size: 26,
-              ),
+              icon: const Icon(Icons.account_circle_outlined, size: 26),
             ),
           ],
         ),
@@ -50,11 +47,7 @@ class HomeView extends StatelessWidget {
             shape: BoxShape.circle,
             color: kPrimaryColor,
           ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 27,
-          ),
+          child: const Icon(Icons.add, color: Colors.white, size: 27),
         ),
       ),
     );

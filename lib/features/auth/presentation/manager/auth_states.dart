@@ -32,6 +32,7 @@ class LoginErrorState extends AuthStates {
   final String error;
   LoginErrorState(this.error);
 }
+
 class UpdateProfileImageLoading extends AuthStates {}
 
 class UpdateProfileImageFailure extends AuthStates {

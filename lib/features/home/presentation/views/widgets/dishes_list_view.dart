@@ -11,9 +11,7 @@ class DishesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.only(top: 5),
-      itemBuilder: (context, index) => DishesListViewItem(
-        dish: dishes[index],
-      ),
+      itemBuilder: (context, index) => DishesListViewItem(dish: dishes[index]),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       itemCount: dishes.length,
     );

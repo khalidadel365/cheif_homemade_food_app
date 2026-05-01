@@ -15,7 +15,7 @@ class ProfileData {
     return ProfileData(
       id: json['id'],
       accountInfo:
-      json['user'] != null ? AccountInfo.fromJson(json['user']) : null,
+          json['user'] != null ? AccountInfo.fromJson(json['user']) : null,
       total_orders: json['total_orders'] ?? 0,
     );
   }

@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cheif_homemade_food/core/widgets/custom_button.dart';
+import 'package:cheif_homemade_food/features/edit_profile/presentation/views/widgets/profile_info_item.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../../constants.dart';
 import '../../../../../core/utilities/styles.dart';
-import 'build_info_tile.dart';
+import 'custom_profile_image.dart';
 
 class ProfileViewBody extends StatefulWidget {
   const ProfileViewBody({super.key});
@@ -21,31 +20,13 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
         child: Column(
           children: [
             const SizedBox(height: 20),
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(70)),
-                  child: Container(
-                    height: 110,
-                    width: 110,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      placeholder:
-                          (context, url) => const CircularProgressIndicator(
-                            color: kPrimaryColor,
-                          ),
-                      errorWidget:
-                          (context, url, error) => const Icon(Icons.error),
-                      imageUrl:
-                          'https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half-caption/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=0hb44OrI',
-                    ),
-                  ),
-                ),
+                CustomProfileImage(),
                 Positioned(
                   bottom: 5,
                   right: 8,
@@ -150,49 +131,22 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
               ),
             ),
             const SizedBox(height: 14),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: buildInfoTile(
-                icon: Icons.location_on_outlined,
-                iconColor: kSecondaryColor,
-                iconWidgetColor: kPrimaryColor,
-                title: "Location",
-                trailing: "Rome, Italy",
-              ),
+            ProfileInfoItem(
+              icon: Icons.location_on_outlined,
+              title: "Location",
+              trailing: "Rome, Italy",
             ),
             const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: buildInfoTile(
-                icon: Icons.star_border,
-                iconColor: kSecondaryColor,
-                iconWidgetColor: kPrimaryColor,
-                title: "Customer Rating",
-                trailing: "4.9",
-              ),
+            ProfileInfoItem(
+              title: "Customer Rating",
+              trailing: "4.9",
+              icon: Icons.star_outline,
             ),
             const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: buildInfoTile(
-                icon: Icons.local_phone_outlined,
-                iconColor: kSecondaryColor,
-                iconWidgetColor: kPrimaryColor,
-                title: "Phone Number",
-                trailing: "01150704967",
-              ),
+            ProfileInfoItem(
+              title: "Phone Number",
+              trailing: "01150704967",
+              icon: Icons.phone_outlined,
             ),
             const SizedBox(height: 24),
             CustomButton(

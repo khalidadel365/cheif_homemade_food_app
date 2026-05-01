@@ -13,8 +13,8 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(GetChefDishesLoadingState());
     var result = await homeRepo.getChefDishes(token: token);
     result.fold(
-          (failure) => emit(GetChefDishesErrorState(failure.errorMessage)),
-          (dishesResponse) {
+      (failure) => emit(GetChefDishesErrorState(failure.errorMessage)),
+      (dishesResponse) {
         chefDishes = dishesResponse.dishes ?? [];
         emit(GetChefDishesSuccessState(chefDishes));
       },
@@ -25,8 +25,8 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(DeleteChefDishLoadingState(dishId));
     var result = await homeRepo.deleteChefDish(token: token, dishId: dishId);
     result.fold(
-          (failure) => emit(DeleteChefDishErrorState(failure.errorMessage)),
-          (_) {
+      (failure) => emit(DeleteChefDishErrorState(failure.errorMessage)),
+      (_) {
         chefDishes.removeWhere((element) => element.id == dishId);
         emit(DeleteChefDishSuccessState(dishId));
         emit(GetChefDishesSuccessState(List.from(chefDishes)));
@@ -48,8 +48,8 @@ class HomeCubit extends Cubit<HomeStates> {
     );
 
     result.fold(
-          (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
-          (updatedDish) {
+      (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
+      (updatedDish) {
         int index = chefDishes.indexWhere((element) => element.id == dishId);
         if (index != -1) {
           chefDishes[index] = updatedDish;

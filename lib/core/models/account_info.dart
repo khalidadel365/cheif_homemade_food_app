@@ -1,4 +1,3 @@
-
 import '../utilities/api_constants.dart';
 
 class AccountInfo {

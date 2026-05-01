@@ -10,7 +10,7 @@ import 'core/utilities/service_locator.dart';
 import 'features/auth/data/repos/auth_repo_imp.dart';
 import 'features/auth/presentation/manager/auth_cubit.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.initSharedPreferences();
   Bloc.observer = MyBlocObserver();

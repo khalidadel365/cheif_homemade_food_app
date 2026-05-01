@@ -29,7 +29,8 @@ class ChefModel {
   factory ChefModel.fromJson(Map<String, dynamic> json) {
     final userData = json['user'] as Map<String, dynamic>?;
 
-    String? rawImageUrl = json['profile_picture'] as String? ??
+    String? rawImageUrl =
+        json['profile_picture'] as String? ??
         userData?['profile_picture'] as String? ??
         json['image_url'] as String? ??
         json['image'] as String?;
@@ -40,9 +41,10 @@ class ChefModel {
       if (rawImageUrl.contains('http')) {
         finalUrl = rawImageUrl.toCleanImageUrl();
       } else {
-        String cleanPath = rawImageUrl.startsWith('/')
-            ? rawImageUrl.substring(1)
-            : rawImageUrl;
+        String cleanPath =
+            rawImageUrl.startsWith('/')
+                ? rawImageUrl.substring(1)
+                : rawImageUrl;
         finalUrl = "${ApiConstants.baseUrl}$cleanPath";
       }
     }
@@ -50,19 +52,23 @@ class ChefModel {
     return ChefModel(
       id: json['id'] as int?,
       userId: userData?['id'] as int?,
-      firstName: json['name'] as String? ??
+      firstName:
+          json['name'] as String? ??
           json['first_name'] as String? ??
           userData?['first_name'] as String? ??
           json['chef_name'] as String?,
-      lastName: json['last_name'] as String? ??
+      lastName:
+          json['last_name'] as String? ??
           userData?['last_name'] as String? ??
           '',
       profilePicUrl: finalUrl,
-      rating: json['rating'] != null
-          ? double.tryParse(json['rating'].toString())
-          : null,
+      rating:
+          json['rating'] != null
+              ? double.tryParse(json['rating'].toString())
+              : null,
       totalReviews: json['total_reviews'] as int?,
-      cuisineSpecialties: json['cuisine_specialties'] as String? ??
+      cuisineSpecialties:
+          json['cuisine_specialties'] as String? ??
           (json['specialties'] is List
               ? (json['specialties'] as List).join(', ')
               : null),

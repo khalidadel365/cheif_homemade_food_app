@@ -19,17 +19,12 @@ Widget buildInfoTile({
       ),
       child: Icon(icon, color: iconWidgetColor),
     ),
-    title: Text(
-      title,
-      style: Styles.textStyle15
-    ),
+    title: Text(title, style: Styles.textStyle15),
     trailing:
         trailingWidget ??
         Text(
           trailing ?? '',
-          style: Styles.textStyle14.copyWith(
-            fontWeight: FontWeight.bold
-          )
+          style: Styles.textStyle14.copyWith(fontWeight: FontWeight.bold),
         ),
   );
 }

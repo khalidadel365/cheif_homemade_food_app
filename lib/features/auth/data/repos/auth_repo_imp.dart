@@ -31,8 +31,10 @@ class AuthRepoImp implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, AccountInfo>> updateProfileImage(
-      {required String token, required XFile imageProfile}) async {
+  Future<Either<Failure, AccountInfo>> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  }) async {
     final multipartFile = await MultipartFile.fromFile(
       imageProfile.path,
       filename: imageProfile.name,
@@ -40,9 +42,7 @@ class AuthRepoImp implements AuthRepo {
     try {
       final res = await getIt.get<ApiService>().postData(
         endpoint: '/api/auth/profile-picture/',
-        data: FormData.fromMap({
-          'profile_picture': multipartFile,
-        }),
+        data: FormData.fromMap({'profile_picture': multipartFile}),
         token: token,
       );
 
@@ -78,7 +78,7 @@ class AuthRepoImp implements AuthRepo {
           'password': password,
           'phone_number': phone,
           'bio': bio,
-          'years_of_experience':yearsOfExp,
+          'years_of_experience': yearsOfExp,
           'address_longitude': 1.556,
           'address_latitude': 5.66,
           'user_type': "chef",

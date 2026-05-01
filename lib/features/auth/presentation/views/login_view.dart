@@ -19,8 +19,9 @@ class LoginView extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginSuccessState) {
           print(state.loginModel.token);
-          CacheHelper.saveData(key: 'token', value: ApiConstants.token)
-              .then((value) {
+          CacheHelper.saveData(key: 'token', value: ApiConstants.token).then((
+            value,
+          ) {
             GoRouter.of(context).go(AppRouter.kHomeView);
           });
           CacheHelper.saveData(key: 'id', value: ApiConstants.id).then((value) {

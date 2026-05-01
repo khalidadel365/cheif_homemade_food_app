@@ -17,6 +17,6 @@ abstract interface class HomeRepo {
   Future<Either<Failure, DishModel>> changeDishAvailability({
     required String token,
     required int dishId,
-    required bool isAvailable
+    required bool isAvailable,
   });
 }

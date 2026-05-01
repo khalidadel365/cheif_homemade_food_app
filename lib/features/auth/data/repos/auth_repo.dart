@@ -5,7 +5,6 @@ import '../../../../core/errors/failures.dart';
 import '../../../../core/models/account_info.dart';
 import '../models/login_model.dart';
 
-
 abstract class AuthRepo {
   Future<Either<Failure, ProfileModel>> setupProfile({
     required String email,
@@ -22,6 +21,8 @@ abstract class AuthRepo {
     required String email,
     required String password,
   });
-  Future<Either<Failure, AccountInfo>> updateProfileImage(
-      {required String token, required XFile imageProfile});
+  Future<Either<Failure, AccountInfo>> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  });
 }

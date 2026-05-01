@@ -29,9 +29,7 @@ class ProfileModel {
     this.updatedAt,
   });
 
-  ProfileModel copyWith({
-    bool? isOnline,
-  }) {
+  ProfileModel copyWith({bool? isOnline}) {
     return ProfileModel(
       id: id,
       userData: userData,
@@ -52,9 +50,10 @@ class ProfileModel {
     return ProfileModel(
       id: json['id'] as int?,
       userData: json['user'] != null ? UserData.fromJson(json['user']) : null,
-      rating: json['rating'] != null
-          ? double.tryParse(json['rating'].toString())
-          : null,
+      rating:
+          json['rating'] != null
+              ? double.tryParse(json['rating'].toString())
+              : null,
       totalReviews: json['total_reviews'] as int?,
       totalOrders: json['total_orders'] as int?,
       bio: json['bio'] as String?,

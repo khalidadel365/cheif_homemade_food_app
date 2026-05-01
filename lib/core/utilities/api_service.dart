@@ -26,10 +26,7 @@ class ApiService {
       'Content-Type': 'application/json',
     };
 
-    var response = await dio!.get(
-      endPoint,
-      queryParameters: queryParameters,
-    );
+    var response = await dio!.get(endPoint, queryParameters: queryParameters);
 
     return response.data;
   }
@@ -44,11 +41,7 @@ class ApiService {
       'Authorization': token != null ? 'Token $token' : '',
       'Content-Type': 'application/json',
     };
-    return dio?.post(
-      endpoint,
-      data: data,
-      queryParameters: query,
-    );
+    return dio?.post(endpoint, data: data, queryParameters: query);
   }
 
   Future<Response>? patchData({
@@ -61,19 +54,15 @@ class ApiService {
       'Authorization': 'Token $token',
       'Content-Type': 'application/json',
     };
-    return dio?.patch(
-      endpoint,
-      data: data,
-      queryParameters: query,
-    );
+    return dio?.patch(endpoint, data: data, queryParameters: query);
   }
+
   Future<dynamic> delete({
     required String endPoint,
     Map<String, dynamic>? queryParameters,
     String? token,
     dynamic data,
   }) async {
-
     dio?.options.headers = {
       if (token != null) 'Authorization': 'Token $token',
       'Content-Type': 'application/json',
