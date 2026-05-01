@@ -1,3 +1,4 @@
+import 'package:cheif_homemade_food/features/edit_profile/presentation/views/profile_view.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/home_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/login_view.dart';
@@ -11,12 +12,14 @@ abstract class AppRouter {
   static const kFreshNearbyDetailsView = '/freshNearbyDetailsView';
   static const kLoginView = '/loginView';
   static const kSignUpView = '/signUpView';
-  static const kSplashScreen = '/splashView';
+  static const kSplashView = '/splashView';
+  static const kProfileView = '/editProfile';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
       GoRoute(path: kLoginView, builder: (context, state) => LoginView()),
       GoRoute(path: kSignUpView, builder: (context, state) => const SignupView()),
+      GoRoute(path: kProfileView, builder: (context, state) => const ProfileView()),
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
     ],
   );

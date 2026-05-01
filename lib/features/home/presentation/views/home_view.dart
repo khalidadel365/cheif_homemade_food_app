@@ -1,9 +1,11 @@
 import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
+import 'package:cheif_homemade_food/core/utilities/app_router.dart';
 import 'package:cheif_homemade_food/features/home/data/repos/home_repo_imp.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/home_cubit.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/widgets/home_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../constants.dart';
 import '../../../../core/utilities/service_locator.dart';
 import '../../../../core/utilities/styles.dart';
@@ -30,7 +32,9 @@ class HomeView extends StatelessWidget {
           actions: [
             IconButton(
               padding: const EdgeInsets.all(0),
-              onPressed: () {},
+              onPressed: () {
+                GoRouter.of(context).push(AppRouter.kProfileView);
+              },
               icon: const Icon(
                 Icons.account_circle_outlined,
                 size: 26,
