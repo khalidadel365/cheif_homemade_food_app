@@ -21,7 +21,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 0),
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -30,8 +30,8 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(70)),
                   child: Container(
-                    height: 120,
-                    width: 120,
+                    height: 110,
+                    width: 110,
                     decoration: const BoxDecoration(shape: BoxShape.circle),
                     child: CachedNetworkImage(
                       fit: BoxFit.cover,
@@ -61,21 +61,21 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Text(
               "Maria's Italian Kitchen",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Styles.textStyle20.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
-              "by Maria Rossi",
+              "emma209@gmail.com",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Styles.textStyle14.copyWith(color: Colors.grey),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
@@ -89,17 +89,17 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 ),
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 10),
             const Divider(
               endIndent: 15,
               indent: 15,
               thickness: 0.8,
               color: Colors.grey,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Container(
               width: double.infinity,
-              constraints: const BoxConstraints(minHeight: 140),
+              constraints: const BoxConstraints(minHeight: 120),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -116,7 +116,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                   ),
                   const SizedBox(height: 4),
                   SizedBox(
-                    height: 40,
+                    height: 25,
                     child: Text(
                       isOnline
                           ? "You are currently online to receive orders."
@@ -149,7 +149,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -179,7 +179,22 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 trailing: "4.9",
               ),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: buildInfoTile(
+                icon: Icons.local_phone_outlined,
+                iconColor: kSecondaryColor,
+                iconWidgetColor: kPrimaryColor,
+                title: "Phone Number",
+                trailing: "01150704967",
+              ),
+            ),
+            const SizedBox(height: 24),
             CustomButton(
               onPressed: () {},
               text: 'Edit Profile',
