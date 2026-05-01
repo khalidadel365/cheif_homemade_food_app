@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../data/repos/home_repo.dart';
 import 'home_states.dart';
 
@@ -14,11 +13,11 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(GetChefDishesLoadingState());
     var result = await homeRepo.getChefDishes(token: token);
     result.fold(
-      (failure) {
+          (failure) {
         emit(GetChefDishesErrorState(failure.errorMessage));
       },
-      (dishModel) {
-        emit(GetChefDishesSuccessState(dishModel));
+          (dishesResponse) {
+        emit(GetChefDishesSuccessState(dishesResponse.dishes ?? []));
       },
     );
   }

@@ -1,16 +1,18 @@
 import 'package:cheif_homemade_food/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/models/dish_model.dart';
 import '../../../../../core/utilities/styles.dart';
 
 class DishesListViewItem extends StatelessWidget {
-  const DishesListViewItem({super.key});
+  final DishModel dish;
+  const DishesListViewItem({super.key, required this.dish});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -28,30 +30,28 @@ class DishesListViewItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
-              'https://images.ninelife.io/products/HAB0DKH3J746/1_61l1-4VIBVL_desktop.webp',
+              dish.imageUrl ?? '',
               height: 85,
               width: 85,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.fastfood),
             ),
           ),
           const SizedBox(width: 16),
-
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Classic Lasagna",
+                  dish.name ?? '',
                   maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  style: Styles.textStyle16.copyWith(
-                    fontWeight: FontWeight.bold
-                  )
+                  overflow: TextOverflow.ellipsis,
+                  style: Styles.textStyle16.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "\$12.99",
+                  "\$${dish.price ?? ''}",
                   style: Styles.textStyle18,
                 ),
                 const SizedBox(height: 10),
@@ -64,7 +64,7 @@ class DishesListViewItem extends StatelessWidget {
                         scale: 0.7,
                         child: Switch(
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          value: true,
+                          value: dish.isAvailable ?? false,
                           onChanged: (val) {},
                           activeColor: Colors.white,
                           activeTrackColor: kPrimaryColor,
@@ -72,10 +72,10 @@ class DishesListViewItem extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text(
-                      "Active",
+                    Text(
+                      dish.isAvailable == true ? "Active" : "Inactive",
                       style: TextStyle(
-                        color: Colors.green,
+                        color: dish.isAvailable == true ? Colors.green : Colors.grey,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -93,7 +93,7 @@ class DishesListViewItem extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.edit_outlined, size: 20, color: Colors.black),
               ),
-              const SizedBox(height: 25,),
+              const SizedBox(height: 25),
               IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),

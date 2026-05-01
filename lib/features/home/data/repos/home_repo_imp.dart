@@ -1,4 +1,4 @@
-import 'package:cheif_homemade_food/core/models/dish_model.dart';
+import 'package:cheif_homemade_food/features/home/data/models/dishes_response_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../../../core/errors/failures.dart';
@@ -8,7 +8,7 @@ import 'home_repo.dart';
 
 class HomeRepoImp implements HomeRepo {
   @override
-  Future<Either<Failure, DishModel>> getChefDishes({
+  Future<Either<Failure, DishesResponseModel>> getChefDishes({
     required String token,
   }) async {
     try {
@@ -16,7 +16,7 @@ class HomeRepoImp implements HomeRepo {
         endPoint: '/api/dishes/chef/',
         token: token,
       );
-      return right(DishModel.fromJson(response));
+      return right(DishesResponseModel.fromJson(response));
     } on Exception catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
