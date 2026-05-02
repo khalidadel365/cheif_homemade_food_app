@@ -1,11 +1,14 @@
+import 'package:cheif_homemade_food/core/utilities/functions/show_snack_bar.dart';
 import 'package:cheif_homemade_food/core/widgets/custom_button.dart';
 import 'package:cheif_homemade_food/features/profile/presentation/views/widgets/profile_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/utilities/api_constants.dart';
+import '../../../../../core/utilities/app_router.dart';
 import '../../../../../core/utilities/styles.dart';
 import '../../manager/profile_cubit.dart';
 import '../../manager/profile_states.dart';
@@ -21,7 +24,18 @@ class ProfileViewBody extends StatefulWidget {
 class _ProfileViewBodyState extends State<ProfileViewBody> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileStates>(
+    return BlocConsumer<ProfileCubit, ProfileStates>(
+      listener: (context, state) {
+        if (state is LogoutSuccessState) {
+          GoRouter.of(context).go(AppRouter.kLoginView);
+        } else if (state is LogoutFailureState) {
+          showSnackBar(
+            context: context,
+            message: state.errMessage,
+            color: Colors.red,
+          );
+        }
+      },
       builder: (context, state) {
         final profile = context.read<ProfileCubit>().profileModel;
 
@@ -35,10 +49,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
                   const SizedBox(height: 20),
@@ -140,13 +151,17 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                           width: 50,
                           child:
                               state is ToggleChefStatusLoadingState
-                                  ? Center(
-                                    child: SizedBox(
-                                      height: 22,
-                                      width: 22,
-                                      child: const CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: kPrimaryColor,
+                                  ? const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 4.0),
+                                      child: SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: kPrimaryColor,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -206,17 +221,27 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                     borderRadius: 4,
                   ),
                   const SizedBox(height: 12),
-                  CustomButton(
-                    onPressed: () {},
-                    text: 'Logout',
-                    elevation: 0.5,
-                    textStyle: Styles.textStyle17.copyWith(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    backgroundColor: Colors.white,
-                    borderRadius: 4,
-                  ),
+                  state is LogoutLoadingState
+                      ? const Center(
+                        child: CircularProgressIndicator(color: kPrimaryColor),
+                      )
+                      : CustomButton(
+                        onPressed: () {
+                          if (ApiConstants.token != null) {
+                            context.read<ProfileCubit>().logout(
+                              token: ApiConstants.token!,
+                            );
+                          }
+                        },
+                        text: 'Logout',
+                        elevation: 0.5,
+                        textStyle: Styles.textStyle17.copyWith(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        backgroundColor: Colors.white,
+                        borderRadius: 4,
+                      ),
                 ],
               ),
             ),

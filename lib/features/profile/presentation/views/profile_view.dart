@@ -24,7 +24,7 @@ class ProfileView extends StatelessWidget {
         ),
         actionsPadding: const EdgeInsets.symmetric(horizontal: 7),
         centerTitle: true,
-        title: Text('My Profile', style: Styles.textStyle23),
+        title: Text('My Profile', style: Styles.textStyle20),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

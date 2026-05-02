@@ -1,3 +1,5 @@
+import '../../../../core/utilities/string_extensions.dart';
+
 class AccountInfo {
   final String? firstName;
   final String? lastName;
@@ -20,17 +22,22 @@ class AccountInfo {
     this.userType,
     this.isActive,
   });
+
   factory AccountInfo.fromJson(Map<String, dynamic> json) {
+    String? rawUrl = json['profile_picture'] as String?;
+
     return AccountInfo(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      email: json['email'],
-      phone: json['phone_number'],
-      profilePicUrl: json['profile_picture_url'],
-      address_longitude: json['address_longitude'],
-      address_latitude: json['address_latitude'],
-      userType: json['user_type'],
-      isActive: json['is_active'],
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone_number'] as String?,
+
+      profilePicUrl: rawUrl.toCleanImageUrl(),
+
+      address_longitude: json['address_longitude'] as String?,
+      address_latitude: json['address_latitude'] as String?,
+      userType: json['user_type'] as String?,
+      isActive: json['is_active'] as bool?,
     );
   }
 }

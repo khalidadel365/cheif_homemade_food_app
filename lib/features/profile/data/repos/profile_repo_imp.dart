@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../core/utilities/api_service.dart';
+import '../models/logout_model.dart';
 
 class ProfileRepoImp implements ProfileRepo {
   final ApiService apiService;
@@ -21,6 +22,7 @@ class ProfileRepoImp implements ProfileRepo {
       final data = await apiService.get(
         endPoint: '/api/auth/profile/$id/',
         token: token,
+
       );
 
       var profileModel = ProfileModel.fromJson(data);
@@ -55,6 +57,21 @@ class ProfileRepoImp implements ProfileRepo {
       return left(ServerFailure.fromDioException(e));
     } catch (e) {
       return left(ServerFailure(e.toString()));
+    }
+  }
+  @override
+  Future<Either<Failure, LogoutModel>> logout({required String token}) async {
+    try {
+      var data = await apiService.postData(
+        endpoint: '/api/auth/logout/',
+        token: token,
+      );
+      return Right(LogoutModel.fromJson(data!.data));
+    } catch (e) {
+      if (e is DioException) {
+        return Left(ServerFailure.fromDioException(e));
+      }
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

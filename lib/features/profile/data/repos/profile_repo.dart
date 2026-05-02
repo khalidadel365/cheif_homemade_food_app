@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/models/profile_model.dart';
+import '../models/logout_model.dart';
 import '../models/toggle_chef_online_status_model.dart';
 
 abstract interface class ProfileRepo {
@@ -13,4 +14,5 @@ abstract interface class ProfileRepo {
   Future<Either<Failure, ToggleChefOnlineStatusModel>> toggleChefStatus({
     required String token,
   });
+  Future<Either<Failure, LogoutModel>> logout({required String token});
 }

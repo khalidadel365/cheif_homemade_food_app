@@ -28,7 +28,7 @@ class HomeView extends StatelessWidget {
             child: Container(color: Colors.grey.withOpacity(0.3), height: 1.0),
           ),
           actionsPadding: const EdgeInsets.symmetric(horizontal: 7),
-          title: Text('My Menu', style: Styles.textStyle23),
+          title: Text('My Menu', style: Styles.textStyle20),
           actions: [
             IconButton(
               padding: const EdgeInsets.all(0),
