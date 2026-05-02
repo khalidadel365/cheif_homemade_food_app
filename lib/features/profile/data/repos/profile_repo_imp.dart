@@ -38,14 +38,19 @@ class ProfileRepoImp implements ProfileRepo {
     required String token,
   }) async {
     try {
-      final data = await apiService.get(
-        endPoint: '/api/auth/chef/toggle-online/',
+      final response = await apiService.postData(
+        endpoint: '/api/auth/chef/toggle-online/',
         token: token,
+        data: {},
       );
 
-      var result = ToggleChefOnlineStatusModel.fromJson(data);
+      if (response?.data != null && response?.data is Map<String, dynamic>) {
+        var result = ToggleChefOnlineStatusModel.fromJson(response!.data);
+        return right(result);
+      } else {
+        return left(ServerFailure("Unexpected response format from server"));
+      }
 
-      return right(result);
     } on DioException catch (e) {
       return left(ServerFailure.fromDioException(e));
     } catch (e) {

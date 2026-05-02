@@ -1,9 +1,9 @@
-import 'package:cheif_homemade_food/features/edit_profile/presentation/views/profile_view.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/home_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 
 import '../../features/auth/presentation/views/signup_view.dart';
+import '../../features/profile/presentation/views/profile_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 
 abstract class AppRouter {

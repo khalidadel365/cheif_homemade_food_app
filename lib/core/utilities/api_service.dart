@@ -33,7 +33,7 @@ class ApiService {
 
   Future<Response>? postData({
     required String endpoint,
-    required dynamic data,
+    dynamic data,
     Map<String, dynamic>? query,
     String? token,
   }) {
@@ -43,7 +43,6 @@ class ApiService {
     };
     return dio?.post(endpoint, data: data, queryParameters: query);
   }
-
   Future<Response>? patchData({
     required String endpoint,
     required Map<String, dynamic> data,

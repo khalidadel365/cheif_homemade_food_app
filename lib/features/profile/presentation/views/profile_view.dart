@@ -34,9 +34,13 @@ class ProfileView extends StatelessWidget {
       ),
       body: BlocProvider(
         create:
-            (context) => ProfileCubit(
-              getIt.get<ProfileRepoImp>(),
-            )..getChefProfile(token: ApiConstants.token!, id: ApiConstants.id!),
+            (context) =>
+                ProfileCubit(getIt.get<ProfileRepoImp>())
+                  ..getChefProfile(
+                    token: ApiConstants.token!,
+                    id: ApiConstants.id!,
+                  )
+                  ..toggleChefStatus(token: ApiConstants.token!),
         child: ProfileViewBody(),
       ),
     );
