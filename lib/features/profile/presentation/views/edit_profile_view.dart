@@ -1,21 +1,20 @@
-import 'package:cheif_homemade_food/core/utilities/service_locator.dart';
-import 'package:cheif_homemade_food/features/profile/presentation/views/widgets/profile_view_body.dart';
+import 'package:cheif_homemade_food/core/models/profile_model.dart';
+import 'package:cheif_homemade_food/features/profile/presentation/views/widgets/edit_profile_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/utilities/api_constants.dart';
 import '../../../../core/utilities/styles.dart';
-import '../../data/repos/profile_repo_imp.dart';
 import '../manager/profile_cubit.dart';
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
-
+class EditProfileView extends StatelessWidget {
+  const EditProfileView({super.key,required this.user});
+  final ProfileModel user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackGroundColor,
-      appBar: AppBar(
+      appBar:  AppBar(
         backgroundColor: kBackGroundColor,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
@@ -23,19 +22,20 @@ class ProfileView extends StatelessWidget {
         ),
         actionsPadding: const EdgeInsets.symmetric(horizontal: 7),
         centerTitle: true,
-        title: Text('My Profile', style: Styles.textStyle20),
+        title: Text('Edit Profile', style: Styles.textStyle20),
         leading: IconButton(
           onPressed: () {
+            context.read<ProfileCubit>().getChefProfile(
+              token: ApiConstants.token!,
+              id: ApiConstants.id!,
+            );
             Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: BlocProvider(
-        create:
-            (context) =>
-                ProfileCubit(getIt.get<ProfileRepoImp>()),
-        child: const ProfileViewBody(),
+      body: EditProfileViewBody(
+        user: user,
       ),
     );
   }

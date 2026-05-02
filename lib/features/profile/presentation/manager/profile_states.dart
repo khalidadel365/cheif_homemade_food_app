@@ -1,6 +1,7 @@
 import 'package:cheif_homemade_food/features/profile/data/models/logout_model.dart';
 
 import '../../../../core/models/profile_model.dart';
+import '../../../auth/data/models/account_info.dart';
 import '../../data/models/toggle_chef_online_status_model.dart';
 
 class ProfileStates {}
@@ -30,7 +31,28 @@ class ToggleChefStatusSuccessState extends ProfileStates {
   ToggleChefStatusSuccessState(this.toggleModel);
 }
 
+class EditProfileLoading extends ProfileStates {}
 
+class EditProfileFailure extends ProfileStates {
+  final String errMessage;
+  EditProfileFailure(this.errMessage);
+}
+
+class EditProfileSuccess extends ProfileStates {
+  ProfileModel profileModel;
+  EditProfileSuccess(this.profileModel);
+}
+class UpdateProfileImageLoading extends ProfileStates {}
+
+class UpdateProfileImageFailure extends ProfileStates {
+  final String errMessage;
+  UpdateProfileImageFailure(this.errMessage);
+}
+
+class UpdateProfileImageSuccess extends ProfileStates {
+  AccountInfo accountInfo;
+  UpdateProfileImageSuccess(this.accountInfo);
+}
 class LogoutLoadingState extends ProfileStates {}
 
 class LogoutFailureState extends ProfileStates {

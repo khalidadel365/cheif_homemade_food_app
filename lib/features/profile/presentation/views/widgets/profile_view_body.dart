@@ -23,6 +23,14 @@ class ProfileViewBody extends StatefulWidget {
 
 class _ProfileViewBodyState extends State<ProfileViewBody> {
   @override
+  void initState() {
+    context.read<ProfileCubit>().getChefProfile(
+      token: ApiConstants.token!,
+      id: ApiConstants.id!,
+    );
+    context.read<ProfileCubit>().toggleChefStatus(token: ApiConstants.token!);
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileStates>(
       listener: (context, state) {
@@ -75,13 +83,29 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                     ],
                   ),
                   const SizedBox(height: 14),
-                  Text(
-                    "${profile.userData?.accountInfo?.firstName ?? ''} ${profile.userData?.accountInfo?.lastName ?? ''}",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Styles.textStyle20.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "${profile.userData?.accountInfo?.firstName ?? ''} ${profile.userData?.accountInfo?.lastName ?? ''}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Styles.textStyle20.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      if (profile.isVerified ?? false) ...[
+                        const SizedBox(width: 5),
+                        const Icon(
+                          Icons.verified,
+                          color: Colors.blue,
+                          size: 20,
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -90,7 +114,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                     overflow: TextOverflow.ellipsis,
                     style: Styles.textStyle14.copyWith(color: Colors.grey),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
@@ -104,14 +128,14 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
                   const Divider(
                     endIndent: 15,
                     indent: 15,
                     thickness: 0.8,
                     color: Colors.grey,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
                   Container(
                     width: double.infinity,
                     constraints: const BoxConstraints(minHeight: 120),
@@ -191,34 +215,48 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 10),
                   const ProfileInfoItem(
                     icon: Icons.location_on_outlined,
                     title: "Location",
                     trailing: "Egypt",
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   ProfileInfoItem(
                     title: 'Customer Rating',
                     trailing: profile.rating?.toString() ?? "0.0",
                     icon: Icons.star_outline,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   ProfileInfoItem(
                     title: "Phone Number",
                     trailing: profile.userData?.accountInfo?.phone ?? "N/A",
                     icon: Icons.phone_outlined,
                   ),
+                  const SizedBox(height: 6),
+                  ProfileInfoItem(
+                    title: "Years of Experience",
+                    trailing: profile.yearsOfExperience?.toString() ?? "0",
+                    icon: Icons.timer_outlined,
+                  ),
                   const SizedBox(height: 24),
                   CustomButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).push(
+                        AppRouter.kEditProfileView,
+                        extra: {
+                          'user': profile,
+                          'cubit': BlocProvider.of<ProfileCubit>(context),
+                        },
+                      );
+                    },
                     text: 'Edit Profile',
                     textStyle: Styles.textStyle17.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                     backgroundColor: kPrimaryColor,
-                    borderRadius: 4,
+                    borderRadius: 12,
                   ),
                   const SizedBox(height: 12),
                   state is LogoutLoadingState
@@ -240,7 +278,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                           fontWeight: FontWeight.w600,
                         ),
                         backgroundColor: Colors.white,
-                        borderRadius: 4,
+                        borderRadius: 12,
                       ),
                 ],
               ),
