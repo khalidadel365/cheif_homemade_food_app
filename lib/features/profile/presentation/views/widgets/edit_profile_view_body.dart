@@ -1,12 +1,12 @@
-import 'dart:io';
 import 'package:cheif_homemade_food/core/models/profile_model.dart';
 import 'package:cheif_homemade_food/core/utilities/functions/show_snack_bar.dart';
 import 'package:cheif_homemade_food/features/profile/presentation/manager/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+
 import '../../../../../constants.dart';
 import '../../../../../core/utilities/api_constants.dart';
+import '../../../../../core/utilities/image_helper.dart';
 import '../../../../../core/utilities/styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_textformfield.dart';
@@ -14,6 +14,7 @@ import '../../manager/profile_cubit.dart';
 
 class EditProfileViewBody extends StatefulWidget {
   const EditProfileViewBody({super.key, required this.user});
+
   final ProfileModel user;
 
   @override
@@ -29,12 +30,12 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   late TextEditingController phoneController;
   late TextEditingController experienceController;
 
-  File? _imageFile;
   bool isChanged = false;
 
   @override
   void initState() {
     super.initState();
+    print(widget.user.userData!.accountInfo!.profilePicUrl!);
     firstNameController = TextEditingController(
       text: widget.user.userData!.accountInfo!.firstName,
     );
@@ -44,13 +45,13 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
     emailController = TextEditingController(
       text: widget.user.userData!.accountInfo!.email,
     );
-    bioController = TextEditingController(text: widget.user.bio);
+    bioController = TextEditingController(text: widget.user.bio ?? "");
     locationController = TextEditingController(text: "Egypt");
     phoneController = TextEditingController(
       text: widget.user.userData!.accountInfo!.phone ?? "",
     );
     experienceController = TextEditingController(
-      text: widget.user.yearsOfExperience!.toString(),
+      text: widget.user.yearsOfExperience?.toString() ?? "0",
     );
 
     firstNameController.addListener(_onFieldChanged);
@@ -69,22 +70,11 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
             emailController.text != widget.user.userData!.accountInfo!.email ||
             bioController.text != (widget.user.bio ?? "") ||
             phoneController.text != (widget.user.userData!.accountInfo!.phone ?? "") ||
-            experienceController.text != widget.user.yearsOfExperience!.toString();
+            experienceController.text != (widget.user.yearsOfExperience?.toString() ?? "0");
 
     setState(() {
-      isChanged = hasTextBeenChanged || _imageFile != null;
+      isChanged = hasTextBeenChanged;
     });
-  }
-
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _imageFile = File(image.path);
-        isChanged = true;
-      });
-    }
   }
 
   @override
@@ -106,11 +96,16 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
         if (state is EditProfileSuccess) {
           setState(() {
             isChanged = false;
-            _imageFile = null;
           });
           showSnackBar(
             context: context,
-            message: 'Data updated successfully',
+            message: 'Profile updated successfully',
+            color: Colors.green,
+          );
+        } else if (state is UpdateProfileImageSuccess) {
+          showSnackBar(
+            context: context,
+            message: 'Profile picture updated successfully',
             color: Colors.green,
           );
         }
@@ -127,14 +122,21 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.grey[200],
-                    backgroundImage: _imageFile != null
-                        ? FileImage(_imageFile!)
-                        : NetworkImage(
+                    backgroundImage: NetworkImage(
                       widget.user.userData!.accountInfo!.profilePicUrl ?? "",
-                    ) as ImageProvider,
+                    ),
                   ),
                   GestureDetector(
-                    onTap: _pickImage,
+                    onTap: () {
+                      ImageHelper.pickImageWithChoice(context).then((value) {
+                        if (value != null) {
+                          context.read<ProfileCubit>().updateProfileImage(
+                            imageProfile: value,
+                            token: ApiConstants.token!,
+                          );
+                        }
+                      });
+                    },
                     child: const CircleAvatar(
                       radius: 18,
                       backgroundColor: kPrimaryColor,
@@ -235,14 +237,14 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                       updatedData["email"] = emailController.text.trim();
                     }
                     if (phoneController.text.trim() !=
-                        widget.user.userData!.accountInfo!.phone) {
+                        (widget.user.userData!.accountInfo!.phone ?? "")) {
                       updatedData["phone_number"] = phoneController.text.trim();
                     }
-                    if (bioController.text.trim() != widget.user.bio) {
+                    if (bioController.text.trim() != (widget.user.bio ?? "")) {
                       updatedData["bio"] = bioController.text.trim();
                     }
                     if (experienceController.text.trim() !=
-                        widget.user.yearsOfExperience.toString()) {
+                        (widget.user.yearsOfExperience?.toString() ?? "0")) {
                       updatedData["years_of_experience"] = experienceController.text.trim();
                     }
 

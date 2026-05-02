@@ -6,6 +6,7 @@ import 'package:cheif_homemade_food/features/home/presentation/views/widgets/hom
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../constants.dart';
 import '../../../../core/utilities/service_locator.dart';
 import '../../../../core/utilities/styles.dart';
@@ -40,14 +41,19 @@ class HomeView extends StatelessWidget {
           ],
         ),
         body: const HomeViewBody(),
-        floatingActionButton: Container(
-          height: 50,
-          width: 50,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: kPrimaryColor,
+        floatingActionButton: InkWell(
+          onTap: () {
+            GoRouter.of(context).push(AppRouter.kAddDishView);
+          },
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: kPrimaryColor,
+            ),
+            child: const Icon(Icons.add, color: Colors.white, size: 27),
           ),
-          child: const Icon(Icons.add, color: Colors.white, size: 27),
         ),
       ),
     );
