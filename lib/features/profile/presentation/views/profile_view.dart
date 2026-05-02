@@ -1,7 +1,13 @@
-import 'package:cheif_homemade_food/features/edit_profile/presentation/views/widgets/profile_view_body.dart';
+import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
+import 'package:cheif_homemade_food/core/utilities/service_locator.dart';
+import 'package:cheif_homemade_food/features/profile/presentation/views/widgets/profile_view_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../constants.dart';
 import '../../../../core/utilities/styles.dart';
+import '../../data/repos/profile_repo_imp.dart';
+import '../manager/profile_cubit.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -9,6 +15,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBackGroundColor,
       appBar: AppBar(
         backgroundColor: kBackGroundColor,
         bottom: PreferredSize(
@@ -25,7 +32,13 @@ class ProfileView extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: ProfileViewBody(),
+      body: BlocProvider(
+        create:
+            (context) => ProfileCubit(
+              getIt.get<ProfileRepoImp>(),
+            )..getChefProfile(token: ApiConstants.token!, id: ApiConstants.id!),
+        child: ProfileViewBody(),
+      ),
     );
   }
 }

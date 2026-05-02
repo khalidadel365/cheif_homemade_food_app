@@ -5,18 +5,19 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/models/account_info.dart';
 import '../../../../core/utilities/api_service.dart';
-import '../../../../core/utilities/service_locator.dart';
 import '../models/login_model.dart';
 import 'auth_repo.dart';
 
 class AuthRepoImp implements AuthRepo {
+  AuthRepoImp(this.apiService);
+  final ApiService apiService;
   @override
   Future<Either<Failure, LoginModel>> loginUser({
     required String email,
     required String password,
   }) async {
     try {
-      var response = await getIt.get<ApiService>().postData(
+      var response = await apiService.postData(
         endpoint: '/api/auth/login/',
         data: {'email': email, 'password': password},
       );
@@ -40,7 +41,7 @@ class AuthRepoImp implements AuthRepo {
       filename: imageProfile.name,
     );
     try {
-      final res = await getIt.get<ApiService>().postData(
+      final res = await apiService.postData(
         endpoint: '/api/auth/profile-picture/',
         data: FormData.fromMap({'profile_picture': multipartFile}),
         token: token,
@@ -69,7 +70,7 @@ class AuthRepoImp implements AuthRepo {
     String? address = '21 Street',
   }) async {
     try {
-      var response = await getIt.get<ApiService>().postData(
+      var response = await apiService.postData(
         endpoint: '/api/auth/signup/',
         data: {
           'first_name': firstName,

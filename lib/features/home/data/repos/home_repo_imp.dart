@@ -5,16 +5,17 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utilities/api_service.dart';
-import '../../../../core/utilities/service_locator.dart';
 import 'home_repo.dart';
 
 class HomeRepoImp implements HomeRepo {
+  final ApiService apiService;
+  HomeRepoImp(this.apiService);
   @override
   Future<Either<Failure, DishesResponseModel>> getChefDishes({
     required String token,
   }) async {
     try {
-      var response = await getIt.get<ApiService>().get(
+      var response = await apiService.get(
         endPoint: '/api/dishes/chef/',
         token: token,
       );
@@ -34,7 +35,7 @@ class HomeRepoImp implements HomeRepo {
     required int dishId,
   }) async {
     try {
-      var response = await getIt.get<ApiService>().delete(
+      var response = await apiService.delete(
         endPoint: '/api/dishes/chef/$dishId/',
         token: token,
       );
@@ -55,7 +56,7 @@ class HomeRepoImp implements HomeRepo {
     required bool isAvailable,
   }) async {
     try {
-      var response = await getIt.get<ApiService>().patchData(
+      var response = await apiService.patchData(
         endpoint: '/api/dishes/chef/$dishId/',
         token: token,
         data: {"is_available": isAvailable},
