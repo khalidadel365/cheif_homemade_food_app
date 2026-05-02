@@ -30,6 +30,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   late TextEditingController phoneController;
   late TextEditingController experienceController;
 
+  String? updatedImageUrl;
   bool isChanged = false;
 
   @override
@@ -96,6 +97,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
         if (state is EditProfileSuccess) {
           setState(() {
             isChanged = false;
+            updatedImageUrl = state.profileModel.userData?.accountInfo?.profilePicUrl;
           });
           showSnackBar(
             context: context,
@@ -103,6 +105,9 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
             color: Colors.green,
           );
         } else if (state is UpdateProfileImageSuccess) {
+          setState(() {
+            updatedImageUrl = state.accountInfo.profilePicUrl;
+          });
           showSnackBar(
             context: context,
             message: 'Profile picture updated successfully',
@@ -123,7 +128,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                     radius: 50,
                     backgroundColor: Colors.grey[200],
                     backgroundImage: NetworkImage(
-                      widget.user.userData!.accountInfo!.profilePicUrl ?? "",
+                      updatedImageUrl ?? widget.user.userData?.accountInfo?.profilePicUrl ?? "",
                     ),
                   ),
                   GestureDetector(

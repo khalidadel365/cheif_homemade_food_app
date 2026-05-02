@@ -1,4 +1,6 @@
 import '../../../../core/utilities/api_constants.dart';
+import '../../features/add_dish/data/models/reviews_preview_model.dart';
+import '../../features/add_dish/data/models/variety_sections_model.dart';
 import '../utilities/string_extensions.dart';
 import 'category_model.dart';
 import 'chef_model.dart';
@@ -17,8 +19,8 @@ class DishModel {
   final double? averageRating;
   final String? imageUrl;
   final int? reviewsCount;
-  //final List<VarietySectionsModel>? varietySections;
-  //final List<ReviewsPreviewModel>? reviewsPreview;
+  final List<VarietySectionsModel>? varietySections;
+  final List<ReviewsPreviewModel>? reviewsPreview;
 
   DishModel({
     this.id,
@@ -34,8 +36,8 @@ class DishModel {
     this.averageRating,
     this.imageUrl,
     this.reviewsCount,
-    //this.varietySections,
-    //this.reviewsPreview,
+    this.varietySections,
+    this.reviewsPreview,
   });
 
   factory DishModel.fromJson(Map<String, dynamic> json) {

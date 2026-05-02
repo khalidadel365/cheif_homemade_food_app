@@ -17,10 +17,8 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) =>
-              HomeCubit(getIt.get<HomeRepoImp>())
-                ..getChefDishes(token: ApiConstants.token!),
+      create: (context) => HomeCubit(getIt.get<HomeRepoImp>())
+        ..getChefDishes(token: ApiConstants.token!),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kBackGroundColor,
@@ -41,18 +39,23 @@ class HomeView extends StatelessWidget {
           ],
         ),
         body: const HomeViewBody(),
-        floatingActionButton: InkWell(
-          onTap: () {
-            GoRouter.of(context).push(AppRouter.kAddDishView);
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: kPrimaryColor,
+        floatingActionButton: Builder(
+          builder: (fabContext) => InkWell(
+            onTap: () async {
+              await GoRouter.of(fabContext).push(AppRouter.kAddDishView);
+              if (fabContext.mounted) {
+                fabContext.read<HomeCubit>().getChefDishes(token: ApiConstants.token!);
+              }
+            },
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: kPrimaryColor,
+              ),
+              child: const Icon(Icons.add, color: Colors.white, size: 27),
             ),
-            child: const Icon(Icons.add, color: Colors.white, size: 27),
           ),
         ),
       ),
