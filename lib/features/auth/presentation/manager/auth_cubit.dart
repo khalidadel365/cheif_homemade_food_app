@@ -60,7 +60,7 @@ class AuthCubit extends Cubit<AuthStates> {
       },
       (loginModel) {
         ApiConstants.token = loginModel.token!;
-        ApiConstants.id = loginModel.profileData!.id!;
+        ApiConstants.id = loginModel.profileData!.accountInfo!.id;
         print(ApiConstants.id);
         emit(LoginSuccessState(loginModel));
       },

@@ -1,6 +1,7 @@
 import '../utilities/api_constants.dart';
 
 class AccountInfo {
+  final int? id;
   final String? firstName;
   final String? lastName;
   final String? email;
@@ -12,6 +13,7 @@ class AccountInfo {
   final String? userType;
 
   AccountInfo({
+    this.id,
     this.firstName,
     this.lastName,
     this.email,
@@ -30,6 +32,7 @@ class AccountInfo {
 
   factory AccountInfo.fromJson(Map<String, dynamic> json) {
     return AccountInfo(
+      id: json['id'] as int?,
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
       email: json['email'] as String?,
