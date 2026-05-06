@@ -1,8 +1,10 @@
 import 'package:cheif_homemade_food/core/models/profile_model.dart';
+import 'package:cheif_homemade_food/core/utilities/app_router.dart';
 import 'package:cheif_homemade_food/core/utilities/functions/show_snack_bar.dart';
 import 'package:cheif_homemade_food/features/profile/presentation/manager/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/utilities/api_constants.dart';
@@ -225,7 +227,14 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               textInputType: TextInputType.text,
               readOnly: true,
               prefixIcon: const Icon(Icons.password),
-              suffixIcon: TextButton(onPressed: (){}, child: Text(
+              suffixIcon: TextButton(onPressed: (){
+                GoRouter.of(context).push(
+                  AppRouter.kChangePasswordRequestView,
+                  extra: {
+                    'cubit': BlocProvider.of<ProfileCubit>(context),
+                  },
+                );
+              }, child: Text(
                 'Reset'
               )) ,
             ),
