@@ -7,6 +7,8 @@ import '../../features/auth/presentation/views/login_view.dart';
 
 import '../../features/auth/presentation/views/signup_view.dart';
 import '../../features/profile/presentation/manager/profile_cubit.dart';
+import '../../features/profile/presentation/views/change_password_confirm_view.dart';
+import '../../features/profile/presentation/views/change_password_request_view.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 
@@ -20,6 +22,8 @@ abstract class AppRouter {
   static const kProfileView = '/ProfileView';
   static const kEditProfileView = '/editProfileView';
   static const kAddDishView = '/addDishView';
+  static const kChangePasswordRequestView = '/changePasswordRequestView';
+  static const kChangePasswordConfirmView = '/changePasswordConfirmView';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
@@ -34,6 +38,24 @@ abstract class AppRouter {
       ),
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(path: kAddDishView, builder: (context, state) => const AddDishView()),
+      GoRoute(
+          path: kChangePasswordRequestView,
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>;
+            return BlocProvider.value(
+              value: data['cubit'] as ProfileCubit,
+              child: ChangePasswordRequestView(),
+            );
+          }),
+      GoRoute(
+          path: kChangePasswordConfirmView,
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>;
+            return BlocProvider.value(
+              value: data['cubit'] as ProfileCubit,
+              child: ChangePasswordConfirmView(),
+            );
+          }),
       GoRoute(
           path: kEditProfileView,
           builder: (context, state) {

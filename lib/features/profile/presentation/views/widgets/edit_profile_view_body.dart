@@ -29,6 +29,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   late TextEditingController locationController;
   late TextEditingController phoneController;
   late TextEditingController experienceController;
+  late TextEditingController passwordController;
 
   String? updatedImageUrl;
   bool isChanged = false;
@@ -46,6 +47,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
     emailController = TextEditingController(
       text: widget.user.userData!.accountInfo!.email,
     );
+    passwordController = TextEditingController(text: "******");
     bioController = TextEditingController(text: widget.user.bio ?? "");
     locationController = TextEditingController(text: "Egypt");
     phoneController = TextEditingController(
@@ -87,6 +89,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
     locationController.dispose();
     phoneController.dispose();
     experienceController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -213,6 +216,18 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               hintText: "Phone",
               textInputType: TextInputType.number,
               prefixIcon: const Icon(Icons.phone_outlined),
+            ),
+            const SizedBox(height: 12),
+            _buildFieldLabel("Password"),
+            CustomTextFormField(
+              controller: passwordController,
+              hintText: "Password",
+              textInputType: TextInputType.text,
+              readOnly: true,
+              prefixIcon: const Icon(Icons.password),
+              suffixIcon: TextButton(onPressed: (){}, child: Text(
+                'Reset'
+              )) ,
             ),
             const SizedBox(height: 12),
             _buildFieldLabel("Years of Experience"),

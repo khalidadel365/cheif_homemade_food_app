@@ -2,6 +2,8 @@ import 'package:cheif_homemade_food/features/profile/data/models/logout_model.da
 
 import '../../../../core/models/profile_model.dart';
 import '../../../auth/data/models/account_info.dart';
+import '../../data/models/password_confirm_model.dart';
+import '../../data/models/password_reset_request_model.dart';
 import '../../data/models/toggle_chef_online_status_model.dart';
 
 class ProfileStates {}
@@ -63,4 +65,27 @@ class LogoutFailureState extends ProfileStates {
 class LogoutSuccessState extends ProfileStates {
   final LogoutModel logoutModel;
   LogoutSuccessState(this.logoutModel);
+}
+class ResetPasswordRequestLoading extends ProfileStates {}
+
+class ResetPasswordRequestFailure extends ProfileStates {
+  final String errMessage;
+  ResetPasswordRequestFailure(this.errMessage);
+}
+
+class ResetPasswordRequestSuccess extends ProfileStates {
+  PasswordResetRequestModel resetRequest;
+  ResetPasswordRequestSuccess(this.resetRequest);
+}
+
+class ResetPasswordConfirmLoading extends ProfileStates {}
+
+class ResetPasswordConfirmFailure extends ProfileStates {
+  final String errMessage;
+  ResetPasswordConfirmFailure(this.errMessage);
+}
+
+class ResetPasswordConfirmSuccess extends ProfileStates {
+  PasswordConfirmModel confirmPassword;
+  ResetPasswordConfirmSuccess(this.confirmPassword);
 }
