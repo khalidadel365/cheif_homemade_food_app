@@ -100,7 +100,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
     );
     result.fold((failure) {
       print('^^^^^^^^ ${failure.errorMessage}');
-      emit(ResetPasswordRequestFailure(failure.errorMessage));
+      emit(ResetPasswordConfirmFailure(failure.errorMessage));
     }, (confirmPassword) {
       emit(ResetPasswordConfirmSuccess(confirmPassword));
     });
