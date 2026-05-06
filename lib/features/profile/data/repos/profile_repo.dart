@@ -5,6 +5,8 @@ import '../../../../core/errors/failures.dart';
 import '../../../../core/models/profile_model.dart';
 import '../../../auth/data/models/account_info.dart';
 import '../models/logout_model.dart';
+import '../models/password_confirm_model.dart';
+import '../models/password_reset_request_model.dart';
 import '../models/toggle_chef_online_status_model.dart';
 
 abstract interface class ProfileRepo {
@@ -23,4 +25,8 @@ abstract interface class ProfileRepo {
         required int? id});
   Future<Either<Failure, AccountInfo>> updateProfileImage(
       {required String token, required XFile imageProfile});
+  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest(
+      {required String token, required String email});
+  Future<Either<Failure, PasswordConfirmModel>> confirmPassword(
+      {required String password});
 }

@@ -31,7 +31,16 @@ class CheifHomeMadeFood extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: kBackGroundColor,
+          primaryColor: kPrimaryColor,
+          focusColor: kPrimaryColor,
           fontFamily: kFontFamily,
+          colorScheme: ColorScheme.fromSeed(
+              primary: kPrimaryColor, seedColor: kPrimaryColor),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: kPrimaryColor,
+            selectionColor: kPrimaryColor.withOpacity(0.3),
+            selectionHandleColor: kPrimaryColor,
+          ),
         ),
       ),
     );

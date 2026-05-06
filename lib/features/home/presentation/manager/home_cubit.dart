@@ -48,14 +48,17 @@ class HomeCubit extends Cubit<HomeStates> {
     );
 
     result.fold(
-      (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
-      (updatedDish) {
+          (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
+          (updatedDish) {
         int index = chefDishes.indexWhere((element) => element.id == dishId);
+
         if (index != -1) {
-          chefDishes[index] = updatedDish;
+          chefDishes[index] = chefDishes[index].copyWith(
+            isAvailable: isAvailable,
+          );
         }
 
-        emit(ChangeDishAvailabilitySuccessState(updatedDish));
+        emit(ChangeDishAvailabilitySuccessState(chefDishes[index]));
         emit(GetChefDishesSuccessState(List.from(chefDishes)));
       },
     );

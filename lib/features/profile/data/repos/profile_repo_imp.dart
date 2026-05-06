@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/utilities/api_service.dart';
 import '../../../auth/data/models/account_info.dart';
 import '../models/logout_model.dart';
+import '../models/password_confirm_model.dart';
+import '../models/password_reset_request_model.dart';
 
 class ProfileRepoImp implements ProfileRepo {
   final ApiService apiService;
@@ -136,6 +138,58 @@ class ProfileRepoImp implements ProfileRepo {
       final profileModel = ProfileModel.fromJson(res!.data);
       return right(profileModel);
     } on DioException catch (e) {
+      return left(ServerFailure.fromDioException(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+  late PasswordResetRequestModel passwordResetMessage;
+
+  @override
+  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest(
+      {required String token, required String email}) async {
+    try {
+      final res = await apiService.postData(
+        endpoint: '/api/auth/password-reset/',
+        data: {
+          'email': email,
+        },
+        token: token,
+      );
+
+      passwordResetMessage = PasswordResetRequestModel.fromJson(res!.data);
+
+      return right(passwordResetMessage);
+    } on DioException catch (e) {
+      print(e.toString());
+      return left(ServerFailure.fromDioException(e));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PasswordConfirmModel>> confirmPassword(
+      {required String password}) async {
+    String uid = passwordResetMessage.uId!;
+    String token = passwordResetMessage.token!;
+    print(passwordResetMessage.uId!);
+    print(passwordResetMessage.token!);
+    try {
+      final res = await apiService.postData(
+        endpoint: '/api/auth/password-reset-confirm/',
+        data: {
+          "uid": uid,
+          "token": token,
+          "new_password": password,
+        },
+      );
+
+      final passwordConfirm = PasswordConfirmModel.fromJson(res!.data);
+
+      return right(passwordConfirm);
+    } on DioException catch (e) {
+      print(e.toString());
       return left(ServerFailure.fromDioException(e));
     } catch (e) {
       return left(ServerFailure(e.toString()));
