@@ -7,8 +7,8 @@ class ApiService {
     dio = Dio(
       BaseOptions(
         //baseUrl: 'https://unsegregated-itchingly-charisse.ngrok-free.dev',
-        baseUrl: 'https://homemadefood.onrender.com',
-        //baseUrl: 'http://10.0.2.2:8000',
+        //baseUrl: 'https://homemadefood.onrender.com',
+        baseUrl: 'http://10.0.2.2:8000',
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         receiveDataWhenStatusError: true,

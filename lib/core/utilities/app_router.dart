@@ -1,4 +1,5 @@
 import 'package:cheif_homemade_food/features/add_dish/presentation/views/add_dish_view.dart';
+import 'package:cheif_homemade_food/features/edit_dish/presentation/views/edit_dish_view.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/home_view.dart';
 import 'package:cheif_homemade_food/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ abstract class AppRouter {
   static const kProfileView = '/ProfileView';
   static const kEditProfileView = '/editProfileView';
   static const kAddDishView = '/addDishView';
+  static const kEditDishView = '/editDishView';
   static const kChangePasswordRequestView = '/changePasswordRequestView';
   static const kChangePasswordConfirmView = '/changePasswordConfirmView';
   static final router = GoRouter(
@@ -38,6 +40,14 @@ abstract class AppRouter {
       ),
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(path: kAddDishView, builder: (context, state) => const AddDishView()),
+      GoRoute(
+        path: kEditDishView,
+        builder: (context, state) {
+          final dishId = state.extra as int;
+          return EditDishView(dishId: dishId);
+        },
+      ),
+
       GoRoute(
           path: kChangePasswordRequestView,
           builder: (context, state) {
