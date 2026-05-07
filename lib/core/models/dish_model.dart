@@ -1,7 +1,6 @@
 import '../../../../core/utilities/api_constants.dart';
 import '../../features/add_dish/data/models/reviews_preview_model.dart';
 import '../../features/add_dish/data/models/variety_sections_model.dart';
-import '../utilities/string_extensions.dart';
 import 'category_model.dart';
 import 'chef_model.dart';
 
@@ -49,7 +48,13 @@ class DishModel {
             (img) => img['is_primary'] == true,
         orElse: () => (json['images'] as List)[0],
       );
-      rawImageUrl = primaryImage['image_url'] ?? primaryImage['image'];
+
+      String imgField = primaryImage['image'] ?? '';
+      if (imgField.contains('https://')) {
+        rawImageUrl = imgField.substring(imgField.indexOf('https://'));
+      } else {
+        rawImageUrl = primaryImage['image_url'] ?? primaryImage['image'];
+      }
     } else {
       rawImageUrl = json['image'] ?? json['image_url'];
     }
@@ -57,7 +62,7 @@ class DishModel {
     String? finalImageUrl;
     if (rawImageUrl != null) {
       if (rawImageUrl.contains('http')) {
-        finalImageUrl = rawImageUrl.toCleanImageUrl();
+        finalImageUrl = rawImageUrl;
       } else {
         String cleanPath = rawImageUrl.startsWith('/') ? rawImageUrl.substring(1) : rawImageUrl;
         finalImageUrl = "${ApiConstants.baseUrl}$cleanPath";

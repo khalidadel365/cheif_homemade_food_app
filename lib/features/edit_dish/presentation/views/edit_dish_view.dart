@@ -14,6 +14,7 @@ class EditDishView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(dishId);
     return BlocProvider(
       create: (context) => EditDishCubit(
         getIt.get<EditDishRepo>(),

@@ -142,7 +142,9 @@ class DishesListViewItem extends StatelessWidget {
                   GoRouter.of(context).push(
                     AppRouter.kEditDishView,
                     extra: dish.id,
-                  );
+                  ).then((value){
+                    context.read<HomeCubit>().getChefDishes(token: ApiConstants.token!);
+                  });
                 },
                 icon: const Icon(
                   Icons.edit_outlined,
