@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import '../../../../../core/utilities/api_constants.dart';
+import '../../../data/models/order_model.dart';
 import '../../../data/models/order_socket_response.dart';
 import '../../../data/repos/home_repo.dart';
 import 'orders_states.dart';
@@ -41,5 +43,50 @@ class OrdersCubit extends Cubit<OrdersState> {
     _ordersSubscription?.cancel();
     homeRepo.closeSocket();
     return super.close();
+  }
+  List<OrderModel> orders = [];
+
+  Future<void> getOrders({
+    required String token,
+    required String status,
+  }) async {
+    emit(GetOrdersLoadingState());
+
+    var result = await homeRepo.getOrders(token: token, status: status);
+
+    result.fold(
+          (failure) => emit(GetOrdersErrorState(failure.errorMessage)),
+          (ordersResponse) {
+        orders = ordersResponse;
+        emit(GetOrdersSuccessState(orders));
+      },
+    );
+  }
+  void refreshOrders() {
+    getOrders(
+      token: ApiConstants.token!,
+      status: 'pending',
+    );
+  }
+  Future<void> updateOrderStatus({
+    required String token,
+    required String orderId,
+    required String status,
+  }) async {
+    emit(UpdateOrderStatusLoadingState());
+
+    var result = await homeRepo.updateOrderStatus(
+      token: token,
+      orderId: orderId,
+      status: status,
+    );
+
+    result.fold(
+          (failure) => emit(UpdateOrderStatusErrorState(failure.errorMessage)),
+          (updatedStatusModel) {
+        emit(UpdateOrderStatusSuccessState(updatedStatusModel));
+        refreshOrders();
+      },
+    );
   }
 }

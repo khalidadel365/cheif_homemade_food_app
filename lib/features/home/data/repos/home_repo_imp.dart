@@ -1,5 +1,7 @@
 import 'package:cheif_homemade_food/core/models/dish_model.dart';
 import 'package:cheif_homemade_food/features/home/data/models/dishes_response_model.dart';
+import 'package:cheif_homemade_food/features/home/data/models/order_model.dart';
+import 'package:cheif_homemade_food/features/home/data/models/update_order_status_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -17,7 +19,7 @@ class HomeRepoImp implements HomeRepo {
   void initOrdersSocket({required String token}) {
     //start connection with server
     //const String socketUrl = 'wss://homemadefood.onrender.com/ws/orders/';
-    const String socketUrl = 'ws://localhost:8000/ws/orders/';
+    const String socketUrl = 'ws://10.0.2.2:8000/ws/orders/';
     socketService.connect('$socketUrl?token=$token');
   }
 
@@ -91,4 +93,55 @@ class HomeRepoImp implements HomeRepo {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, List<OrderModel>>> getOrders({
+    required String token,
+    required String status,
+  }) async {
+    try {
+      final response = await apiService.get(
+        endPoint: '/api/orders/?status=$status',
+        token: token,
+      );
+
+      final List<dynamic> data = response as List;
+
+      final orders = data.map((orderJson) => OrderModel.fromJson(orderJson)).toList();
+
+      return right(orders);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UpdateOrderStatusModel>> updateOrderStatus({
+    required String token,
+    required String orderId,
+    required String status,
+  }) async {
+    try {
+      final response = await apiService.patchData(
+        endpoint: '/api/orders/$orderId/status/',
+        token: token,
+        data: {
+          "status": status,
+        },
+      );
+
+
+      final result = UpdateOrderStatusModel.fromJson(response?.data ?? {});
+      return right(result);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
 }

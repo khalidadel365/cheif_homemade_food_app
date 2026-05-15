@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class OrderModel {
   final String? orderId;
   final String? customerName;
@@ -18,6 +20,38 @@ class OrderModel {
     this.itemsCount,
     this.estimatedReadyTime,
   });
+
+  String get displayOrderCode {
+    print("Order ID: $orderId");
+    if (orderId == null || orderId!.isEmpty) return "ORD-UNKNOWN";
+    String shortId = orderId!.length > 6
+        ? orderId!.substring(0, 6).toUpperCase()
+        : orderId!.toUpperCase();
+    return "ORD-$shortId";
+  }
+
+  String get formattedDate {
+    if (createdAt == null || createdAt!.isEmpty) return "";
+    try {
+      DateTime dateTime = DateTime.parse(createdAt!);
+      return DateFormat('MMM d, hh:mm a').format(dateTime);
+    } catch (e) {
+      return createdAt!;
+    }
+  }
+
+  int get remainingSecondsToCancel {
+    if (createdAt == null || createdAt!.isEmpty) return 300;
+    try {
+      DateTime createdDate = DateTime.parse(createdAt!).toLocal();
+      DateTime now = DateTime.now();
+      int differenceInSeconds = now.difference(createdDate).inSeconds;
+      int remaining = 300 - differenceInSeconds;
+      return remaining > 0 ? remaining : 0;
+    } catch (e) {
+      return 300;
+    }
+  }
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(

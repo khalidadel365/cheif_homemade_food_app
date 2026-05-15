@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 class OrderCountdownTimer extends StatefulWidget {
   final int initialSeconds;
-  const OrderCountdownTimer({super.key, required this.initialSeconds});
+
+  const OrderCountdownTimer({
+    super.key,
+    this.initialSeconds = 300, // القيمة الافتراضية 5 دقائق
+  });
 
   @override
   State<OrderCountdownTimer> createState() => _OrderCountdownTimerState();
@@ -23,9 +27,14 @@ class _OrderCountdownTimerState extends State<OrderCountdownTimer> {
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds > 0) {
-        setState(() => _remainingSeconds--);
+        if (mounted) {
+          setState(() => _remainingSeconds--);
+        }
       } else {
         _timer?.cancel();
+        // implement any action when timer finishes
+
+        debugPrint("Timer Finished!");
       }
     });
   }

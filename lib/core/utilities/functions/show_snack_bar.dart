@@ -14,7 +14,7 @@ void showSnackBar({
       CustomSnackBar.success(
         message: message,
         backgroundColor: color,
-        icon: const Icon(null),
+        icon: Icon(null),
       ),
       displayDuration: const Duration(seconds: 5),
     );

@@ -53,6 +53,7 @@ abstract class AppRouter {
                     color: Colors.green,
                     message: 'You have a new order!',
                   );
+                  context.read<OrdersCubit>().refreshOrders();
                 } else if (state is OrderCanceledSuccess) {
                   showSnackBar(
                     context: context,
@@ -60,6 +61,7 @@ abstract class AppRouter {
                     message: 'Order has been auto canceled ',
                     showFromTop: true,
                   );
+                  context.read<OrdersCubit>().refreshOrders();
                 }
               },
               child: child,

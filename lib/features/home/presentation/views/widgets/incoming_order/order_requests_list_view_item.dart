@@ -1,12 +1,17 @@
 import 'package:cheif_homemade_food/constants.dart';
+import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
 import 'package:cheif_homemade_food/core/utilities/styles.dart';
 import 'package:cheif_homemade_food/core/widgets/custom_button.dart';
+import 'package:cheif_homemade_food/features/home/data/models/order_model.dart';
+import 'package:cheif_homemade_food/features/home/presentation/manager/orders/orders_cubit.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'order_countdown_timer.dart';
 
 class OrderRequestsListViewItem extends StatelessWidget {
-  const OrderRequestsListViewItem({super.key});
+  final OrderModel order;
+
+  const OrderRequestsListViewItem({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class OrderRequestsListViewItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 0.5,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -24,17 +30,13 @@ class OrderRequestsListViewItem extends StatelessWidget {
               children: [
                 _buildHeader(),
                 const SizedBox(height: 16),
-                const Text(
-                  "1x Homemade Sourdough Loaf",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const Text(
-                  "2x Berry Jam Jars (Small)",
-                  style: TextStyle(fontSize: 14),
+                Text(
+                  "${order.itemsCount ?? 0} Items ordered",
+                  style: const TextStyle(fontSize: 14),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "\$24.50",
+                  "${order.totalAmount ?? '0.00'} EGP",
                   style: Styles.textStyle18.copyWith(
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColor,
@@ -44,7 +46,7 @@ class OrderRequestsListViewItem extends StatelessWidget {
             ),
           ),
           _buildTimerSection(),
-          _buildActionButtons(),
+          _buildActionButtons(context), // باصينا الـ context هنا عشان الـ Cubit
         ],
       ),
     );
@@ -52,39 +54,32 @@ class OrderRequestsListViewItem extends StatelessWidget {
 
   Widget _buildHeader() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const CircleAvatar(
-          backgroundImage: NetworkImage(
-            'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fHww',
-          ),
-        ),
-        const SizedBox(width: 12),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Sarah J.",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(
-                "2 mins ago • 0.5 mi away",
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              order.customerName ?? "Unknown User",
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              order.formattedDate,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ],
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: kPrimaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            "4.8",
+            order.displayOrderCode,
             style: Styles.textStyle13.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
+              color: kPrimaryColor,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -96,17 +91,19 @@ class OrderRequestsListViewItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: Colors.red[50],
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Icon(Icons.timer_outlined, color: Colors.red, size: 18),
-              SizedBox(width: 8),
-              OrderCountdownTimer(initialSeconds: 80),
+              const Icon(Icons.timer_outlined, color: Colors.red, size: 18),
+              const SizedBox(width: 8),
+              OrderCountdownTimer(
+                initialSeconds: order.remainingSecondsToCancel,
+              ),
             ],
           ),
-          Text(
+          const Text(
             "Auto-decline soon",
             style: TextStyle(color: Colors.redAccent, fontSize: 12),
           ),
@@ -115,7 +112,7 @@ class OrderRequestsListViewItem extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -124,7 +121,13 @@ class OrderRequestsListViewItem extends StatelessWidget {
             child: CustomButton(
               backgroundColor: Colors.grey.shade100,
               borderRadius: 12,
-              onPressed: () {},
+              onPressed: () {
+                context.read<OrdersCubit>().updateOrderStatus(
+                  token: ApiConstants.token!,
+                  orderId: order.orderId!,
+                  status: 'rejected',
+                );
+              },
               text: 'Decline',
               elevation: 0,
               height: 45,
@@ -139,7 +142,13 @@ class OrderRequestsListViewItem extends StatelessWidget {
             child: CustomButton(
               backgroundColor: kPrimaryColor,
               borderRadius: 12,
-              onPressed: () {},
+              onPressed: () {
+                context.read<OrdersCubit>().updateOrderStatus(
+                  token: ApiConstants.token!,
+                  orderId: order.orderId!,
+                  status: 'accepted',
+                );
+              },
               text: 'Accept Order',
               elevation: 0,
               height: 45,
