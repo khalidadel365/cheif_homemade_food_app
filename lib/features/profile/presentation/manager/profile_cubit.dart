@@ -16,16 +16,16 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   Future<void> getChefProfile({required String token, required int id}) async {
     emit(GetProfileLoadingState());
-    var result = await profileRepo.getChefProfile(
-      token: token,
-      id: id,
+    var result = await profileRepo.getChefProfile(token: token, id: id);
+    result.fold(
+      (failure) {
+        emit(GetProfileFailureState(failure.errorMessage));
+      },
+      (profile) {
+        profileModel = profile;
+        emit(GetProfileSuccessState(profile));
+      },
     );
-    result.fold((failure) {
-      emit(GetProfileFailureState(failure.errorMessage));
-    }, (profile) {
-      profileModel = profile;
-      emit(GetProfileSuccessState(profile));
-    });
   }
 
   Future<void> toggleChefStatus({required String token}) async {
@@ -36,86 +36,104 @@ class ProfileCubit extends Cubit<ProfileStates> {
     var result = await profileRepo.toggleChefStatus(token: token);
 
     result.fold(
-          (failure) {
+      (failure) {
         emit(ToggleChefStatusFailureState(failure.errorMessage));
         if (profileModel != null) {
           emit(GetProfileSuccessState(profileModel!));
         }
       },
-          (toggleModel) {
+      (toggleModel) {
         profileModel = toggleModel.profileModel;
         emit(GetProfileSuccessState(profileModel!));
         emit(ToggleChefStatusSuccessState(toggleModel));
       },
     );
   }
-  Future<void> editProfile(
-      {required String token,
-        required int id,
-        required Map<String, dynamic> data}) async {
+
+  Future<void> editProfile({
+    required String token,
+    required int id,
+    required Map<String, dynamic> data,
+  }) async {
     emit(EditProfileLoading());
     var result = await profileRepo.editUserData(
       token: token,
       id: id,
       data: data,
     );
-    result.fold((failure) {
-      emit(EditProfileFailure(failure.errorMessage));
-    }, (profile) {
-      emit(EditProfileSuccess(profile));
-    });
+    result.fold(
+      (failure) {
+        emit(EditProfileFailure(failure.errorMessage));
+      },
+      (profile) {
+        emit(EditProfileSuccess(profile));
+      },
+    );
   }
-  Future<void> updateProfileImage(
-      {required String token, required XFile imageProfile}) async {
+
+  Future<void> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  }) async {
     emit(UpdateProfileImageLoading());
     var result = await profileRepo.updateProfileImage(
       token: token,
       imageProfile: imageProfile,
     );
-    result.fold((failure) {
-      emit(UpdateProfileImageFailure(failure.errorMessage));
-    }, (accountInfo) {
-      emit(UpdateProfileImageSuccess(accountInfo));
-    });
+    result.fold(
+      (failure) {
+        emit(UpdateProfileImageFailure(failure.errorMessage));
+      },
+      (accountInfo) {
+        emit(UpdateProfileImageSuccess(accountInfo));
+      },
+    );
   }
-  Future<void> resetPasswordRequest(
-      {required String token, required String email}) async {
+
+  Future<void> resetPasswordRequest({
+    required String token,
+    required String email,
+  }) async {
     emit(ResetPasswordRequestLoading());
     var result = await profileRepo.resetPasswordRequest(
       token: token,
       email: email,
     );
-    result.fold((failure) {
-      print('^^^^^^^^ ${failure.errorMessage}');
-      emit(ResetPasswordRequestFailure(failure.errorMessage));
-    }, (resetPasswordModel) {
-      emit(ResetPasswordRequestSuccess(resetPasswordModel));
-    });
+    result.fold(
+      (failure) {
+        print('^^^^^^^^ ${failure.errorMessage}');
+        emit(ResetPasswordRequestFailure(failure.errorMessage));
+      },
+      (resetPasswordModel) {
+        emit(ResetPasswordRequestSuccess(resetPasswordModel));
+      },
+    );
   }
 
   Future<void> resetPasswordConfirm({required String password}) async {
     emit(ResetPasswordConfirmLoading());
-    var result = await profileRepo.confirmPassword(
-      password: password,
+    var result = await profileRepo.confirmPassword(password: password);
+    result.fold(
+      (failure) {
+        print('^^^^^^^^ ${failure.errorMessage}');
+        emit(ResetPasswordConfirmFailure(failure.errorMessage));
+      },
+      (confirmPassword) {
+        emit(ResetPasswordConfirmSuccess(confirmPassword));
+      },
     );
-    result.fold((failure) {
-      print('^^^^^^^^ ${failure.errorMessage}');
-      emit(ResetPasswordConfirmFailure(failure.errorMessage));
-    }, (confirmPassword) {
-      emit(ResetPasswordConfirmSuccess(confirmPassword));
-    });
   }
+
   Future<void> logout({required String token}) async {
     emit(LogoutLoadingState());
     var result = await profileRepo.logout(token: token);
 
-    result.fold(
-          (failure) => emit(LogoutFailureState(failure.errorMessage)),
-          (logoutModel) async {
-            await CacheHelper.removeData(key: 'token');
-        ApiConstants.token = null;
-        emit(LogoutSuccessState(logoutModel));
-      },
-    );
+    result.fold((failure) => emit(LogoutFailureState(failure.errorMessage)), (
+      logoutModel,
+    ) async {
+      await CacheHelper.removeData(key: 'token');
+      ApiConstants.token = null;
+      emit(LogoutSuccessState(logoutModel));
+    });
   }
 }

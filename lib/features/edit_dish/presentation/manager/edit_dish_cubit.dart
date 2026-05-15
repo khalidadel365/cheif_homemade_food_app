@@ -16,8 +16,8 @@ class EditDishCubit extends Cubit<EditDishStates> {
     emit(FetchDishDetailsLoadingState());
     var result = await editDishRepo.fetchDishDetails(dishId: id);
     result.fold(
-          (failure) => emit(FetchDishDetailsFailureState(failure.errorMessage)),
-          (dish) {
+      (failure) => emit(FetchDishDetailsFailureState(failure.errorMessage)),
+      (dish) {
         currentDish = dish;
         emit(FetchDishDetailsSuccessState(dish));
       },
@@ -28,8 +28,8 @@ class EditDishCubit extends Cubit<EditDishStates> {
     emit(GetCategoriesLoadingState());
     var result = await editDishRepo.getCategories();
     result.fold(
-          (failure) => emit(GetCategoriesErrorState(failure.errorMessage)),
-          (categoriesList) {
+      (failure) => emit(GetCategoriesErrorState(failure.errorMessage)),
+      (categoriesList) {
         categories = categoriesList;
         emit(GetCategoriesSuccessState(categoriesList));
       },
@@ -48,8 +48,8 @@ class EditDishCubit extends Cubit<EditDishStates> {
       imageFile: imageFile,
     );
     result.fold(
-          (failure) => emit(UploadDishImageErrorState(failure.errorMessage)),
-          (uploadedImage) {
+      (failure) => emit(UploadDishImageErrorState(failure.errorMessage)),
+      (uploadedImage) {
         if (currentDish != null) {
           currentDish = currentDish!.copyWith(imageUrl: uploadedImage.imageUrl);
         }
@@ -69,12 +69,11 @@ class EditDishCubit extends Cubit<EditDishStates> {
       token: token,
       dishData: dishData,
     );
-    result.fold(
-          (failure) => emit(UpdateDishErrorState(failure.errorMessage)),
-          (updatedDish) {
-        currentDish = updatedDish;
-        emit(UpdateDishSuccessState(updatedDish));
-      },
-    );
+    result.fold((failure) => emit(UpdateDishErrorState(failure.errorMessage)), (
+      updatedDish,
+    ) {
+      currentDish = updatedDish;
+      emit(UpdateDishSuccessState(updatedDish));
+    });
   }
 }

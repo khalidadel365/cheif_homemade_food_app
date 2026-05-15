@@ -77,9 +77,12 @@ class ProfileRepoImp implements ProfileRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+
   @override
-  Future<Either<Failure, AccountInfo>> updateProfileImage(
-      {required String token, required XFile imageProfile}) async {
+  Future<Either<Failure, AccountInfo>> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  }) async {
     final multipartFile = await MultipartFile.fromFile(
       imageProfile.path,
       filename: imageProfile.name,
@@ -87,9 +90,7 @@ class ProfileRepoImp implements ProfileRepo {
     try {
       final res = await apiService.postData(
         endpoint: '/api/auth/profile-picture/',
-        data: FormData.fromMap({
-          'profile_picture': multipartFile,
-        }),
+        data: FormData.fromMap({'profile_picture': multipartFile}),
         token: token,
       );
 
@@ -102,6 +103,7 @@ class ProfileRepoImp implements ProfileRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
   @override
   Future<Either<Failure, ProfileModel>> editUserData({
     required String token,
@@ -117,8 +119,7 @@ class ProfileRepoImp implements ProfileRepo {
       userFields["last_name"] = data["last_name"];
     if (data.containsKey("phone_number"))
       userFields["phone_number"] = data["phone_number"];
-    if (data.containsKey("email"))
-      userFields["email"] = data["email"];
+    if (data.containsKey("email")) userFields["email"] = data["email"];
 
     if (userFields.isNotEmpty) {
       finalBody["user"] = userFields;
@@ -143,17 +144,18 @@ class ProfileRepoImp implements ProfileRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
   late PasswordResetRequestModel passwordResetMessage;
 
   @override
-  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest(
-      {required String token, required String email}) async {
+  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest({
+    required String token,
+    required String email,
+  }) async {
     try {
       final res = await apiService.postData(
         endpoint: '/api/auth/password-reset/',
-        data: {
-          'email': email,
-        },
+        data: {'email': email},
         token: token,
       );
 
@@ -169,8 +171,9 @@ class ProfileRepoImp implements ProfileRepo {
   }
 
   @override
-  Future<Either<Failure, PasswordConfirmModel>> confirmPassword(
-      {required String password}) async {
+  Future<Either<Failure, PasswordConfirmModel>> confirmPassword({
+    required String password,
+  }) async {
     String uid = passwordResetMessage.uId!;
     String token = passwordResetMessage.token!;
     print(passwordResetMessage.uId!);
@@ -178,11 +181,7 @@ class ProfileRepoImp implements ProfileRepo {
     try {
       final res = await apiService.postData(
         endpoint: '/api/auth/password-reset-confirm/',
-        data: {
-          "uid": uid,
-          "token": token,
-          "new_password": password,
-        },
+        data: {"uid": uid, "token": token, "new_password": password},
       );
 
       final passwordConfirm = PasswordConfirmModel.fromJson(res!.data);

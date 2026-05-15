@@ -35,17 +35,19 @@ class DynamicVarietyView extends StatelessWidget {
         ...sections.asMap().entries.map((entry) {
           return buildSectionForm(entry.key, context);
         }).toList(),
-        const SizedBox(height: 8,),
+        const SizedBox(height: 8),
         Align(
           alignment: Alignment.bottomRight,
           child: OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(side: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1.5
-            )),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: Colors.grey.shade300, width: 1.5),
+            ),
             onPressed: onAddSection,
             icon: const Icon(Icons.add, color: kPrimaryColor),
-            label: const Text("Add New Section", style: TextStyle(color: kPrimaryColor)),
+            label: const Text(
+              "Add New Section",
+              style: TextStyle(color: kPrimaryColor),
+            ),
           ),
         ),
       ],
@@ -87,7 +89,10 @@ class DynamicVarietyView extends StatelessWidget {
                   },
                 ),
               ),
-              const Text("Required", style: TextStyle(fontWeight: FontWeight.w500)),
+              const Text(
+                "Required",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
               const Spacer(),
               IconButton(
                 icon: const Icon(Icons.close, color: Colors.grey),
@@ -95,15 +100,22 @@ class DynamicVarietyView extends StatelessWidget {
               ),
             ],
           ),
-          const Text("Section Name *", style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            "Section Name *",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           CustomTextFormField(
             controller: sections[sIndex].nameController,
             hintText: "e.g., Choose your bread",
-            validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+            validate:
+                (value) => (value == null || value.isEmpty) ? 'Required' : null,
           ),
           const SizedBox(height: 16),
-          const Text("Variety Options", style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            "Variety Options",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           ListView.builder(
             shrinkWrap: true,
@@ -117,23 +129,33 @@ class DynamicVarietyView extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: CustomTextFormField(
-                        controller: sections[sIndex].varieties[vIndex].nameController,
+                        controller:
+                            sections[sIndex].varieties[vIndex].nameController,
                         hintText: "Option name",
-                        validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                        validate:
+                            (value) =>
+                                (value == null || value.isEmpty)
+                                    ? 'Required'
+                                    : null,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       flex: 1,
                       child: CustomTextFormField(
-                        controller: sections[sIndex].varieties[vIndex].priceController,
+                        controller:
+                            sections[sIndex].varieties[vIndex].priceController,
                         hintText: "Price",
                         textInputType: TextInputType.number,
                       ),
                     ),
                     if (sections[sIndex].varieties.length > 1)
                       IconButton(
-                        icon: const Icon(Icons.close, size: 20, color: Colors.red),
+                        icon: const Icon(
+                          Icons.close,
+                          size: 20,
+                          color: Colors.red,
+                        ),
                         onPressed: () {
                           sections[sIndex].varieties.removeAt(vIndex);
                           onRefresh();
@@ -149,8 +171,15 @@ class DynamicVarietyView extends StatelessWidget {
               sections[sIndex].varieties.add(VarietyOptionModel());
               onRefresh();
             },
-            icon: const Icon(Icons.add_circle_outline, size: 20, color: kPrimaryColor),
-            label: const Text("Add New Variety", style: TextStyle(color: kPrimaryColor)),
+            icon: const Icon(
+              Icons.add_circle_outline,
+              size: 20,
+              color: kPrimaryColor,
+            ),
+            label: const Text(
+              "Add New Variety",
+              style: TextStyle(color: kPrimaryColor),
+            ),
           ),
         ],
       ),

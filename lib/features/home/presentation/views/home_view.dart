@@ -1,12 +1,11 @@
 import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
 import 'package:cheif_homemade_food/core/utilities/app_router.dart';
 import 'package:cheif_homemade_food/features/home/data/repos/home_repo_imp.dart';
-import 'package:cheif_homemade_food/features/home/presentation/manager/home_cubit.dart';
+import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_cubit.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/widgets/home_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../constants.dart';
 import '../../../../core/utilities/service_locator.dart';
 import '../../../../core/utilities/styles.dart';
@@ -17,8 +16,10 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(getIt.get<HomeRepoImp>())
-        ..getChefDishes(token: ApiConstants.token!),
+      create:
+          (context) =>
+              HomeCubit(getIt.get<HomeRepoImp>())
+                ..getChefDishes(token: ApiConstants.token!),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kBackGroundColor,
@@ -40,23 +41,26 @@ class HomeView extends StatelessWidget {
         ),
         body: const HomeViewBody(),
         floatingActionButton: Builder(
-          builder: (fabContext) => InkWell(
-            onTap: () async {
-              await GoRouter.of(fabContext).push(AppRouter.kAddDishView);
-              if (fabContext.mounted) {
-                fabContext.read<HomeCubit>().getChefDishes(token: ApiConstants.token!);
-              }
-            },
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: kPrimaryColor,
+          builder:
+              (fabContext) => InkWell(
+                onTap: () async {
+                  await GoRouter.of(fabContext).push(AppRouter.kAddDishView);
+                  if (fabContext.mounted) {
+                    fabContext.read<HomeCubit>().getChefDishes(
+                      token: ApiConstants.token!,
+                    );
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kPrimaryColor,
+                  ),
+                  child: const Icon(Icons.add, color: Colors.white, size: 27),
+                ),
               ),
-              child: const Icon(Icons.add, color: Colors.white, size: 27),
-            ),
-          ),
         ),
       ),
     );

@@ -32,9 +32,7 @@ class ProfileView extends StatelessWidget {
         ),
       ),
       body: BlocProvider(
-        create:
-            (context) =>
-                ProfileCubit(getIt.get<ProfileRepoImp>()),
+        create: (context) => ProfileCubit(getIt.get<ProfileRepoImp>()),
         child: const ProfileViewBody(),
       ),
     );

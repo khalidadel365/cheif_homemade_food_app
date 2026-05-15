@@ -95,24 +95,37 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 24),
-              const Text("Dish Name", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Dish Name",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               CustomTextFormField(
                 controller: _nameController,
                 hintText: "e.g., Pizza",
-                validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
               ),
               const SizedBox(height: 16),
-              const Text("Dish Description", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Dish Description",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               CustomTextFormField(
                 controller: _descController,
                 hintText: "Describe your dish...",
                 maxLines: 4,
-                validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
               ),
               const SizedBox(height: 16),
-              const Text('Dish Category', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'Dish Category',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               _buildCategoryDropdown(state),
               const SizedBox(height: 16),
@@ -122,8 +135,10 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
               const SizedBox(height: 32),
               DynamicVarietyView(
                 sections: sections,
-                onAddSection: () => setState(() => sections.add(SectionModel())),
-                onRemoveSection: (index) => setState(() => sections.removeAt(index)),
+                onAddSection:
+                    () => setState(() => sections.add(SectionModel())),
+                onRemoveSection:
+                    (index) => setState(() => sections.removeAt(index)),
                 onRefresh: () => setState(() {}),
               ),
               const SizedBox(height: 40),
@@ -139,12 +154,13 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
   Widget _buildCategoryDropdown(AddDishStates state) {
     List<DropdownMenuEntry<int>> entries = [];
     if (state is GetCategoriesSuccessState) {
-      entries = state.categories.map((category) {
-        return DropdownMenuEntry<int>(
-          value: category.id!,
-          label: category.name!,
-        );
-      }).toList();
+      entries =
+          state.categories.map((category) {
+            return DropdownMenuEntry<int>(
+              value: category.id!,
+              label: category.name!,
+            );
+          }).toList();
     }
 
     return DropdownMenu<int>(
@@ -174,13 +190,18 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Price", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Price",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               CustomTextFormField(
                 controller: _priceController,
                 hintText: "0.00",
                 textInputType: TextInputType.number,
-                validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
               ),
             ],
           ),
@@ -190,13 +211,18 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Prep Time (min)", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Prep Time (min)",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               CustomTextFormField(
                 controller: _prepTimeController,
                 hintText: "30",
                 textInputType: TextInputType.number,
-                validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
               ),
             ],
           ),
@@ -216,16 +242,17 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Currently Offering", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const Text(
+            "Currently Offering",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
           Switch(
             value: isCurrentlyOffering,
-            trackOutlineColor: WidgetStateProperty.all(
-              Colors.transparent,
-            ),
+            trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
             thumbColor: WidgetStateProperty.all(Colors.white),
             activeTrackColor: kPrimaryColor,
             inactiveTrackColor: Colors.grey[300],
-            onChanged:(val) => setState(() => isCurrentlyOffering = val),
+            onChanged: (val) => setState(() => isCurrentlyOffering = val),
           ),
         ],
       ),
@@ -235,7 +262,10 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
   Widget _buildSaveButton(BuildContext context) {
     return CustomButton(
       text: 'Save Dish',
-      textStyle: Styles.textStyle16.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+      textStyle: Styles.textStyle16.copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
       onPressed: () {
         if (_formKey.currentState!.validate() && selectedCategoryId != null) {
           final payload = {
@@ -244,14 +274,28 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
             "price": double.tryParse(_priceController.text),
             "preparation_time": int.tryParse(_prepTimeController.text),
             "category_id": selectedCategoryId,
-            "variety_sections": sections.map((s) => {
-              "name": s.nameController.text,
-              "is_required": s.isRequired,
-              "options": s.varieties.map((v) => {
-                "name": v.nameController.text,
-                "price_adjustment": double.tryParse(v.priceController.text) ?? 0.0,
-              }).toList(),
-            }).toList(),
+            "variety_sections":
+                sections
+                    .map(
+                      (s) => {
+                        "name": s.nameController.text,
+                        "is_required": s.isRequired,
+                        "options":
+                            s.varieties
+                                .map(
+                                  (v) => {
+                                    "name": v.nameController.text,
+                                    "price_adjustment":
+                                        double.tryParse(
+                                          v.priceController.text,
+                                        ) ??
+                                        0.0,
+                                  },
+                                )
+                                .toList(),
+                      },
+                    )
+                    .toList(),
           };
 
           context.read<AddDishCubit>().addDish(
@@ -259,7 +303,11 @@ class _AddDishViewBodyState extends State<AddDishViewBody> {
             token: ApiConstants.token!,
           );
         } else if (selectedCategoryId == null) {
-          showSnackBar(context: context, message: 'Category is required', color: Colors.red);
+          showSnackBar(
+            context: context,
+            message: 'Category is required',
+            color: Colors.red,
+          );
         }
       },
       backgroundColor: kPrimaryColor,

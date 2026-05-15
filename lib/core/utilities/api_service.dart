@@ -43,6 +43,7 @@ class ApiService {
     };
     return dio?.post(endpoint, data: data, queryParameters: query);
   }
+
   Future<Response>? patchData({
     required String endpoint,
     required Map<String, dynamic> data,

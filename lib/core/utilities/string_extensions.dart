@@ -11,9 +11,13 @@ extension ImageFormatter on String? {
     }
 
     if (this!.startsWith('/')) {
-      String baseUrl = ApiConstants.baseUrl!.endsWith('/')
-          ? ApiConstants.baseUrl!.substring(0, ApiConstants.baseUrl!.length - 1)
-          : ApiConstants.baseUrl!;
+      String baseUrl =
+          ApiConstants.baseUrl!.endsWith('/')
+              ? ApiConstants.baseUrl!.substring(
+                0,
+                ApiConstants.baseUrl!.length - 1,
+              )
+              : ApiConstants.baseUrl!;
 
       return "$baseUrl${this!}";
     }

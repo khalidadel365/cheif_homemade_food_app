@@ -7,6 +7,7 @@ import '../../data/models/password_reset_request_model.dart';
 import '../../data/models/toggle_chef_online_status_model.dart';
 
 class ProfileStates {}
+
 class GetProfileInitialState extends ProfileStates {}
 
 class GetProfileLoadingState extends ProfileStates {}
@@ -44,6 +45,7 @@ class EditProfileSuccess extends ProfileStates {
   ProfileModel profileModel;
   EditProfileSuccess(this.profileModel);
 }
+
 class UpdateProfileImageLoading extends ProfileStates {}
 
 class UpdateProfileImageFailure extends ProfileStates {
@@ -55,6 +57,7 @@ class UpdateProfileImageSuccess extends ProfileStates {
   AccountInfo accountInfo;
   UpdateProfileImageSuccess(this.accountInfo);
 }
+
 class LogoutLoadingState extends ProfileStates {}
 
 class LogoutFailureState extends ProfileStates {
@@ -66,6 +69,7 @@ class LogoutSuccessState extends ProfileStates {
   final LogoutModel logoutModel;
   LogoutSuccessState(this.logoutModel);
 }
+
 class ResetPasswordRequestLoading extends ProfileStates {}
 
 class ResetPasswordRequestFailure extends ProfileStates {

@@ -11,8 +11,8 @@ class AddDishCubit extends Cubit<AddDishStates> {
     emit(GetCategoriesLoadingState());
     var result = await addDishRepo.getCategories();
     result.fold(
-          (failure) => emit(GetCategoriesErrorState(failure.errorMessage)),
-          (categories) {
+      (failure) => emit(GetCategoriesErrorState(failure.errorMessage)),
+      (categories) {
         emit(GetCategoriesSuccessState(categories));
       },
     );
@@ -23,15 +23,11 @@ class AddDishCubit extends Cubit<AddDishStates> {
     required String token,
   }) async {
     emit(AddDishLoadingState());
-    var result = await addDishRepo.addDish(
-      dishData: dishData,
-      token: token,
-    );
-    result.fold(
-          (failure) => emit(AddDishErrorState(failure.errorMessage)),
-          (dishModel) {
-        emit(AddDishSuccessState(dishModel));
-      },
-    );
+    var result = await addDishRepo.addDish(dishData: dishData, token: token);
+    result.fold((failure) => emit(AddDishErrorState(failure.errorMessage)), (
+      dishModel,
+    ) {
+      emit(AddDishSuccessState(dishModel));
+    });
   }
 }

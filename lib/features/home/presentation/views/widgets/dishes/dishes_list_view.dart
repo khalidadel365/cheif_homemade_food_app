@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/models/dish_model.dart';
+import '../../../../../../core/models/dish_model.dart';
 import 'dishes_list_view_item.dart';
 
 class DishesListView extends StatelessWidget {

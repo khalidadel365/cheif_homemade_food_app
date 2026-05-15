@@ -5,6 +5,11 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
 
 abstract interface class HomeRepo {
+  void initOrdersSocket({required String token});
+
+  Stream<dynamic> listenToOrders();
+  void closeSocket();
+
   Future<Either<Failure, DishesResponseModel>> getChefDishes({
     required String token,
   });

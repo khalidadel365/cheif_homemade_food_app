@@ -19,14 +19,20 @@ abstract interface class ProfileRepo {
     required String token,
   });
   Future<Either<Failure, LogoutModel>> logout({required String token});
-  Future<Either<Failure, ProfileModel>> editUserData(
-      {required String token,
-        required Map<String, dynamic> data,
-        required int? id});
-  Future<Either<Failure, AccountInfo>> updateProfileImage(
-      {required String token, required XFile imageProfile});
-  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest(
-      {required String token, required String email});
-  Future<Either<Failure, PasswordConfirmModel>> confirmPassword(
-      {required String password});
+  Future<Either<Failure, ProfileModel>> editUserData({
+    required String token,
+    required Map<String, dynamic> data,
+    required int? id,
+  });
+  Future<Either<Failure, AccountInfo>> updateProfileImage({
+    required String token,
+    required XFile imageProfile,
+  });
+  Future<Either<Failure, PasswordResetRequestModel>> resetPasswordRequest({
+    required String token,
+    required String email,
+  });
+  Future<Either<Failure, PasswordConfirmModel>> confirmPassword({
+    required String password,
+  });
 }

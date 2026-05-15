@@ -9,12 +9,12 @@ import '../../../../core/utilities/styles.dart';
 import '../manager/profile_cubit.dart';
 
 class EditProfileView extends StatelessWidget {
-  const EditProfileView({super.key,required this.user});
+  const EditProfileView({super.key, required this.user});
   final ProfileModel user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: kBackGroundColor,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
@@ -34,9 +34,7 @@ class EditProfileView extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: EditProfileViewBody(
-        user: user,
-      ),
+      body: EditProfileViewBody(user: user),
     );
   }
 }

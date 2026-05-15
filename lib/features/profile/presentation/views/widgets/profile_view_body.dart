@@ -30,6 +30,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     );
     context.read<ProfileCubit>().toggleChefStatus(token: ApiConstants.token!);
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileStates>(

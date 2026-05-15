@@ -4,12 +4,7 @@ class OptionsModel {
   final String? priceAdjustment;
   final bool? isAvailable;
 
-  OptionsModel({
-    this.id,
-    this.name,
-    this.priceAdjustment,
-    this.isAvailable,
-  });
+  OptionsModel({this.id, this.name, this.priceAdjustment, this.isAvailable});
 
   factory OptionsModel.fromJson(Map<String, dynamic> json) {
     return OptionsModel(

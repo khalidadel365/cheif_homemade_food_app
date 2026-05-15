@@ -15,9 +15,8 @@ class ToggleChefOnlineStatusModel {
     return ToggleChefOnlineStatusModel(
       detail: json['detail'] as String?,
       isOnlineStatus: json['is_online'] as bool?,
-      profileModel: json['chef'] != null
-          ? ProfileModel.fromJson(json['chef'])
-          : null,
+      profileModel:
+          json['chef'] != null ? ProfileModel.fromJson(json['chef']) : null,
     );
   }
 }

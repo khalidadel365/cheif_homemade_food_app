@@ -10,9 +10,6 @@ class PasswordResetRequestModel {
     );
   }
   Map<String, dynamic> toJson() {
-    return {
-      'uId': uId,
-      'token': token,
-    };
+    return {'uId': uId, 'token': token};
   }
 }

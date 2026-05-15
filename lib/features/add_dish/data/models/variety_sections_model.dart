@@ -21,7 +21,8 @@ class VarietySectionsModel {
       name: json['name'] as String?,
       description: json['description'] as String?,
       isRequired: json['is_required'] as bool?,
-      options: (json['options'] as List?)
+      options:
+          (json['options'] as List?)
               ?.map((e) => OptionsModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],

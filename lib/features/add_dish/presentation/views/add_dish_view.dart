@@ -3,7 +3,7 @@ import 'package:cheif_homemade_food/features/add_dish/data/repos/add_dish_repo_i
 import 'package:cheif_homemade_food/features/add_dish/presentation/manager/add_dish_cubit.dart';
 import 'package:cheif_homemade_food/features/add_dish/presentation/views/widgets/add_dish_view_body.dart';
 import 'package:cheif_homemade_food/features/home/data/repos/home_repo_imp.dart';
-import 'package:cheif_homemade_food/features/home/presentation/manager/home_cubit.dart';
+import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

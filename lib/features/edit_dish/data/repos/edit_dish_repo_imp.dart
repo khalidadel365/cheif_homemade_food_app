@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/models/dish_model.dart';
 import '../models/dish_image_model.dart';
 
-class EditDishRepoImp implements EditDishRepo{
+class EditDishRepoImp implements EditDishRepo {
   final ApiService apiService;
   EditDishRepoImp(this.apiService);
 
@@ -31,13 +31,13 @@ class EditDishRepoImp implements EditDishRepo{
       }
     }
   }
+
   @override
-  Future<Either<Failure, DishModel>> fetchDishDetails(
-      {required int dishId}) async {
+  Future<Either<Failure, DishModel>> fetchDishDetails({
+    required int dishId,
+  }) async {
     try {
-      var data = await apiService.get(
-        endPoint: '/api/dishes/$dishId/',
-      );
+      var data = await apiService.get(endPoint: '/api/dishes/$dishId/');
       DishModel dish = DishModel.fromJson(data);
       return right(dish);
     } catch (e) {
@@ -47,6 +47,7 @@ class EditDishRepoImp implements EditDishRepo{
       return left(ServerFailure(e.toString()));
     }
   }
+
   @override
   Future<Either<Failure, DishModel>> updateDish({
     required int dishId,
@@ -67,6 +68,7 @@ class EditDishRepoImp implements EditDishRepo{
       return left(ServerFailure(e.toString()));
     }
   }
+
   @override
   Future<Either<Failure, DishImageModel>> uploadDishImage({
     required int dishId,
@@ -82,17 +84,13 @@ class EditDishRepoImp implements EditDishRepo{
       final res = await apiService.postData(
         endpoint: '/api/dishes/$dishId/images/create/',
         token: token,
-        data: FormData.fromMap({
-          'image': multipartFile,
-          'is_primary': true,
-        }),
+        data: FormData.fromMap({'image': multipartFile, 'is_primary': true}),
       );
 
       final uploadedImage = DishImageModel.fromJson(res!.data);
 
       print('Image uploaded successfully');
       return right(uploadedImage);
-
     } on DioException catch (e) {
       print(e.toString());
       return left(ServerFailure.fromDioException(e));

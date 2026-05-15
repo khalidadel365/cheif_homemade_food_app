@@ -1,4 +1,4 @@
-import '../../../../core/models/dish_model.dart';
+import '../../../../../core/models/dish_model.dart';
 
 abstract class HomeStates {}
 

@@ -5,11 +5,27 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utilities/api_service.dart';
+import '../service/orders_socket_service.dart';
 import 'home_repo.dart';
 
 class HomeRepoImp implements HomeRepo {
   final ApiService apiService;
-  HomeRepoImp(this.apiService);
+  final OrdersSocketService socketService;
+  HomeRepoImp(this.apiService, this.socketService);
+
+  @override
+  void initOrdersSocket({required String token}) {
+    //start connection with server
+    //const String socketUrl = 'wss://homemadefood.onrender.com/ws/orders/';
+    const String socketUrl = 'ws://localhost:8000/ws/orders/';
+    socketService.connect('$socketUrl?token=$token');
+  }
+
+  @override
+  Stream<dynamic> listenToOrders() {
+    return socketService.stream;
+  }
+
   @override
   Future<Either<Failure, DishesResponseModel>> getChefDishes({
     required String token,
@@ -27,6 +43,11 @@ class HomeRepoImp implements HomeRepo {
         return left(ServerFailure(e.toString()));
       }
     }
+  }
+
+  @override
+  void closeSocket() {
+    socketService.close();
   }
 
   @override

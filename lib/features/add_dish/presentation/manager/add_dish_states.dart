@@ -19,6 +19,7 @@ class AddDishErrorState extends AddDishStates {
 
   AddDishErrorState(this.error);
 }
+
 class GetCategoriesLoadingState extends AddDishStates {}
 
 class GetCategoriesSuccessState extends AddDishStates {
@@ -32,5 +33,3 @@ class GetCategoriesErrorState extends AddDishStates {
 
   GetCategoriesErrorState(this.error);
 }
-
-

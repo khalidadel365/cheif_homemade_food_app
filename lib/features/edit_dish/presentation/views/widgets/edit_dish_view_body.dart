@@ -73,8 +73,10 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
         final oOpt = oSec.options![j];
         final cOpt = cSec.varieties[j];
 
-        double currentPrice = double.tryParse(cOpt.priceController.text.trim()) ?? 0.0;
-        double originalPrice = double.tryParse(oOpt.priceAdjustment?.toString() ?? '0.0') ?? 0.0;
+        double currentPrice =
+            double.tryParse(cOpt.priceController.text.trim()) ?? 0.0;
+        double originalPrice =
+            double.tryParse(oOpt.priceAdjustment?.toString() ?? '0.0') ?? 0.0;
 
         if (cOpt.nameController.text.trim() != (oOpt.name ?? '').trim() ||
             currentPrice != originalPrice) {
@@ -93,35 +95,51 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
           _dishNameController.text = state.dish.name ?? '';
           _descController.text = state.dish.description ?? '';
           _priceController.text = state.dish.price?.toString() ?? '';
-          _prepTimeController.text = state.dish.preparationTime?.toString() ?? '';
+          _prepTimeController.text =
+              state.dish.preparationTime?.toString() ?? '';
           selectedCategoryId = state.dish.category?.id;
           currentImageUrl = state.dish.imageUrl;
 
           if (!isInitialDataLoaded) {
-            sections = state.dish.varietySections?.map((s) {
-              var section = SectionModel();
-              section.nameController.text = s.name ?? '';
-              section.nameController.addListener(_updateState);
-              section.isRequired = s.isRequired ?? false;
-              section.varieties = s.options?.map((v) {
-                var option = VarietyOptionModel();
-                option.nameController.text = v.name ?? '';
-                option.nameController.addListener(_updateState);
-                option.priceController.text = v.priceAdjustment?.toString() ?? '';
-                option.priceController.addListener(_updateState);
-                return option;
-              }).toList() ?? [VarietyOptionModel()];
-              return section;
-            }).toList() ?? [];
+            sections =
+                state.dish.varietySections?.map((s) {
+                  var section = SectionModel();
+                  section.nameController.text = s.name ?? '';
+                  section.nameController.addListener(_updateState);
+                  section.isRequired = s.isRequired ?? false;
+                  section.varieties =
+                      s.options?.map((v) {
+                        var option = VarietyOptionModel();
+                        option.nameController.text = v.name ?? '';
+                        option.nameController.addListener(_updateState);
+                        option.priceController.text =
+                            v.priceAdjustment?.toString() ?? '';
+                        option.priceController.addListener(_updateState);
+                        return option;
+                      }).toList() ??
+                      [VarietyOptionModel()];
+                  return section;
+                }).toList() ??
+                [];
             isInitialDataLoaded = true;
             setState(() {});
           }
         }
 
-        if (state is UpdateDishSuccessState || state is UploadDishImageSuccessState) {
-          showSnackBar(context: context, message: "Data Updated Successfully", color: Colors.green);
-        } else if (state is UpdateDishErrorState || state is UploadDishImageErrorState) {
-          showSnackBar(context: context, message: "Error updating data", color: Colors.red);
+        if (state is UpdateDishSuccessState ||
+            state is UploadDishImageSuccessState) {
+          showSnackBar(
+            context: context,
+            message: "Data Updated Successfully",
+            color: Colors.green,
+          );
+        } else if (state is UpdateDishErrorState ||
+            state is UploadDishImageErrorState) {
+          showSnackBar(
+            context: context,
+            message: "Error updating data",
+            color: Colors.red,
+          );
         }
       },
       builder: (context, state) {
@@ -131,15 +149,20 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
             state is GetCategoriesLoadingState ||
             cubit.categories == null ||
             cubit.currentDish == null) {
-          return const Center(child: SpinKitPulse(color: kPrimaryColor, size: 50.0));
+          return const Center(
+            child: SpinKitPulse(color: kPrimaryColor, size: 50.0),
+          );
         }
 
         final initialDish = cubit.currentDish!;
 
-        bool hasChanges = _dishNameController.text.trim() != (initialDish.name ?? '') ||
+        bool hasChanges =
+            _dishNameController.text.trim() != (initialDish.name ?? '') ||
             _descController.text.trim() != (initialDish.description ?? '') ||
-            _priceController.text.trim() != (initialDish.price?.toString() ?? '') ||
-            _prepTimeController.text.trim() != (initialDish.preparationTime?.toString() ?? '') ||
+            _priceController.text.trim() !=
+                (initialDish.price?.toString() ?? '') ||
+            _prepTimeController.text.trim() !=
+                (initialDish.preparationTime?.toString() ?? '') ||
             selectedCategoryId != initialDish.category?.id ||
             pickedImageFile != null ||
             _checkIfVarietyChanged(cubit);
@@ -162,7 +185,11 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
                       CustomTextFormField(
                         controller: _dishNameController,
                         hintText: "e.g., Pizza",
-                        validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                        validate:
+                            (value) =>
+                                (value == null || value.isEmpty)
+                                    ? 'Required'
+                                    : null,
                       ),
                       const SizedBox(height: 16),
                       _buildFieldLabel("Dish Description"),
@@ -170,7 +197,11 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
                         controller: _descController,
                         hintText: "Describe your dish...",
                         maxLines: 4,
-                        validate: (value) => (value == null || value.isEmpty) ? 'Required' : null,
+                        validate:
+                            (value) =>
+                                (value == null || value.isEmpty)
+                                    ? 'Required'
+                                    : null,
                       ),
                       const SizedBox(height: 16),
                       _buildFieldLabel("Dish Category"),
@@ -183,11 +214,15 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
                         onAddSection: () {
                           var newSection = SectionModel();
                           newSection.nameController.addListener(_updateState);
-                          newSection.varieties.first.nameController.addListener(_updateState);
-                          newSection.varieties.first.priceController.addListener(_updateState);
+                          newSection.varieties.first.nameController.addListener(
+                            _updateState,
+                          );
+                          newSection.varieties.first.priceController
+                              .addListener(_updateState);
                           setState(() => sections.add(newSection));
                         },
-                        onRemoveSection: (index) => setState(() => sections.removeAt(index)),
+                        onRemoveSection:
+                            (index) => setState(() => sections.removeAt(index)),
                         onRefresh: () => setState(() {}),
                       ),
                       const SizedBox(height: 40),
@@ -198,10 +233,13 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
                 ),
               ),
             ),
-            if (state is UploadDishImageLoadingState || state is UpdateDishLoadingState)
+            if (state is UploadDishImageLoadingState ||
+                state is UpdateDishLoadingState)
               Container(
                 color: Colors.black.withOpacity(0.3),
-                child: const Center(child: SpinKitPulse(color: kPrimaryColor, size: 50.0)),
+                child: const Center(
+                  child: SpinKitPulse(color: kPrimaryColor, size: 50.0),
+                ),
               ),
           ],
         );
@@ -224,9 +262,22 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: pickedImageFile != null
-                ? Image.file(File(pickedImageFile!.path), height: 300, width: double.infinity, fit: BoxFit.cover)
-                : Image.network(currentImageUrl ?? '', height: 300, width: double.infinity, fit: BoxFit.cover, errorBuilder: (c, e, s) => const Icon(Icons.broken_image, size: 50)),
+            child:
+                pickedImageFile != null
+                    ? Image.file(
+                      File(pickedImageFile!.path),
+                      height: 300,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                    : Image.network(
+                      currentImageUrl ?? '',
+                      height: 300,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (c, e, s) => const Icon(Icons.broken_image, size: 50),
+                    ),
           ),
           Positioned(
             bottom: 8,
@@ -239,8 +290,15 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
               },
               child: Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.5), shape: BoxShape.circle),
-                child: const Icon(Icons.file_upload_outlined, color: Colors.white, size: 24),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.file_upload_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
             ),
           ),
@@ -257,49 +315,94 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.grey[50],
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: kPrimaryColor, width: 2)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: kPrimaryColor, width: 2),
+        ),
       ),
       onSelected: (int? id) => setState(() => selectedCategoryId = id),
-      dropdownMenuEntries: categories.map((cat) => DropdownMenuEntry<int>(value: cat.id!, label: cat.name!)).toList(),
+      dropdownMenuEntries:
+          categories
+              .map(
+                (cat) =>
+                    DropdownMenuEntry<int>(value: cat.id!, label: cat.name!),
+              )
+              .toList(),
     );
   }
 
   Widget _buildSaveButton(bool hasChanges, EditDishCubit cubit) {
     return CustomButton(
       text: 'Save Changes',
-      textStyle: Styles.textStyle16.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-      onPressed: hasChanges
-          ? () {
-        if (_formKey.currentState!.validate()) {
-          if (pickedImageFile != null) {
-            cubit.uploadDishImage(dishId: cubit.currentDish!.id!, token: ApiConstants.token!, imageFile: pickedImageFile!);
-          }
-          final payload = {
-            "name": _dishNameController.text.trim(),
-            "description": _descController.text.trim(),
-            "price": double.tryParse(_priceController.text),
-            "preparation_time": int.tryParse(_prepTimeController.text),
-            "category_id": selectedCategoryId,
-            "variety_sections": sections.map((s) => {
-              "name": s.nameController.text.trim(),
-              "is_required": s.isRequired,
-              "options": s.varieties.map((v) => {
-                "name": v.nameController.text.trim(),
-                "price_adjustment": double.tryParse(v.priceController.text) ?? 0.0,
-              }).toList(),
-            }).toList(),
-          };
-          cubit.updateDish(dishId: cubit.currentDish!.id!, token: ApiConstants.token!, dishData: payload);
-        }
-      }
-          : null,
+      textStyle: Styles.textStyle16.copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      onPressed:
+          hasChanges
+              ? () {
+                if (_formKey.currentState!.validate()) {
+                  if (pickedImageFile != null) {
+                    cubit.uploadDishImage(
+                      dishId: cubit.currentDish!.id!,
+                      token: ApiConstants.token!,
+                      imageFile: pickedImageFile!,
+                    );
+                  }
+                  final payload = {
+                    "name": _dishNameController.text.trim(),
+                    "description": _descController.text.trim(),
+                    "price": double.tryParse(_priceController.text),
+                    "preparation_time": int.tryParse(_prepTimeController.text),
+                    "category_id": selectedCategoryId,
+                    "variety_sections":
+                        sections
+                            .map(
+                              (s) => {
+                                "name": s.nameController.text.trim(),
+                                "is_required": s.isRequired,
+                                "options":
+                                    s.varieties
+                                        .map(
+                                          (v) => {
+                                            "name":
+                                                v.nameController.text.trim(),
+                                            "price_adjustment":
+                                                double.tryParse(
+                                                  v.priceController.text,
+                                                ) ??
+                                                0.0,
+                                          },
+                                        )
+                                        .toList(),
+                              },
+                            )
+                            .toList(),
+                  };
+                  cubit.updateDish(
+                    dishId: cubit.currentDish!.id!,
+                    token: ApiConstants.token!,
+                    dishData: payload,
+                  );
+                }
+              }
+              : null,
       backgroundColor: hasChanges ? kPrimaryColor : Colors.grey,
       borderRadius: 14,
     );
   }
 
-  Widget _buildFieldLabel(String label) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)));
+  Widget _buildFieldLabel(String label) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Text(
+      label,
+      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+    ),
+  );
 
   Widget _buildPriceAndTimeFields() {
     return Row(
@@ -309,7 +412,14 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildFieldLabel("Price (EGY)"),
-              CustomTextFormField(controller: _priceController, hintText: "0.00", textInputType: TextInputType.number, validate: (value) => (value == null || value.isEmpty) ? 'Required' : null),
+              CustomTextFormField(
+                controller: _priceController,
+                hintText: "0.00",
+                textInputType: TextInputType.number,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
+              ),
             ],
           ),
         ),
@@ -319,7 +429,14 @@ class _EditDishViewBodyState extends State<EditDishViewBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildFieldLabel("Prep Time (min)"),
-              CustomTextFormField(controller: _prepTimeController, hintText: "30", textInputType: TextInputType.number, validate: (value) => (value == null || value.isEmpty) ? 'Required' : null),
+              CustomTextFormField(
+                controller: _prepTimeController,
+                hintText: "30",
+                textInputType: TextInputType.number,
+                validate:
+                    (value) =>
+                        (value == null || value.isEmpty) ? 'Required' : null,
+              ),
             ],
           ),
         ),

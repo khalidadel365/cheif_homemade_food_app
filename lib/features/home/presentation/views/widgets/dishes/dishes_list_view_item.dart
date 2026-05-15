@@ -3,11 +3,11 @@ import 'package:cheif_homemade_food/core/utilities/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../constants.dart';
-import '../../../../../core/models/dish_model.dart';
-import '../../../../../core/utilities/styles.dart';
-import '../../manager/home_cubit.dart';
-import '../../manager/home_states.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/models/dish_model.dart';
+import '../../../../../../core/utilities/styles.dart';
+import '../../../manager/home/home_cubit.dart';
+import '../../../manager/home/home_states.dart';
 
 class DishesListViewItem extends StatelessWidget {
   final DishModel dish;
@@ -139,11 +139,12 @@ class DishesListViewItem extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  GoRouter.of(context).push(
-                    AppRouter.kEditDishView,
-                    extra: dish.id,
-                  ).then((value){
-                    context.read<HomeCubit>().getChefDishes(token: ApiConstants.token!);
+                  GoRouter.of(
+                    context,
+                  ).push(AppRouter.kEditDishView, extra: dish.id).then((value) {
+                    context.read<HomeCubit>().getChefDishes(
+                      token: ApiConstants.token!,
+                    );
                   });
                 },
                 icon: const Icon(

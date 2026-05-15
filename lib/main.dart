@@ -35,7 +35,9 @@ class CheifHomeMadeFood extends StatelessWidget {
           focusColor: kPrimaryColor,
           fontFamily: kFontFamily,
           colorScheme: ColorScheme.fromSeed(
-              primary: kPrimaryColor, seedColor: kPrimaryColor),
+            primary: kPrimaryColor,
+            seedColor: kPrimaryColor,
+          ),
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: kPrimaryColor,
             selectionColor: kPrimaryColor.withOpacity(0.3),

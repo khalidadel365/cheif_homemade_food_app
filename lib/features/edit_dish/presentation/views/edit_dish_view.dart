@@ -16,11 +16,11 @@ class EditDishView extends StatelessWidget {
   Widget build(BuildContext context) {
     print(dishId);
     return BlocProvider(
-      create: (context) => EditDishCubit(
-        getIt.get<EditDishRepo>(),
-      )
-        ..getCategories()
-        ..fetchDishDetails(id: dishId),
+      create:
+          (context) =>
+              EditDishCubit(getIt.get<EditDishRepo>())
+                ..getCategories()
+                ..fetchDishDetails(id: dishId),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kBackGroundColor,

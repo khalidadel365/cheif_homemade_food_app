@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/models/dish_model.dart';
-import '../../data/repos/home_repo.dart';
+import '../../../../../core/models/dish_model.dart';
+import '../../../data/repos/home_repo.dart';
 import 'home_states.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -48,8 +48,8 @@ class HomeCubit extends Cubit<HomeStates> {
     );
 
     result.fold(
-          (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
-          (updatedDish) {
+      (failure) => emit(ChangeDishAvailabilityErrorState(failure.errorMessage)),
+      (updatedDish) {
         int index = chefDishes.indexWhere((element) => element.id == dishId);
 
         if (index != -1) {

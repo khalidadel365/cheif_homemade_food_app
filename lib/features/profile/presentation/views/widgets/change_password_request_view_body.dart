@@ -21,86 +21,87 @@ class ChangePasswordRequestViewBody extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
 
     return BlocListener<ProfileCubit, ProfileStates>(
-        listener: (context, state) {
-          if (state is ResetPasswordRequestFailure) {
-            print('**********fail}');
-            showSnackBar(
-                context: context,
-                message: '${state.errMessage}',
-                color: Colors.red);
-          } else if (state is ResetPasswordRequestSuccess) {
-            print('valiid emaiiill');
-            GoRouter.of(context).push(
-              AppRouter.kChangePasswordConfirmView,
-              extra: {
-                'cubit': BlocProvider.of<ProfileCubit>(context),
-              },
-            );
-          }
-        },
-        child: SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('Change Password', style: Styles.textStyle18),
-              centerTitle: true,
-            ),
-            body: BlocBuilder<ProfileCubit, ProfileStates>(
-              builder: (context, state) {
-                if (state is ResetPasswordRequestLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: kPrimaryColor,
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 15),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Enter Your Email Address',
-                              style: Styles.textStyle14),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          CustomTextFormField(
-                            controller: emailController,
-                            hintText: 'Examble@gmail.com',
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return 'Email is required';
-                              } else {
-                                return null;
-                              }
-                            },
-                            hintTextStyle: TextStyle(color: Colors.grey),
-                          ),
-                          const Spacer(),
-                          CustomButton(
-                              width: double.infinity,
-                              text: 'Change Password',
-                              textStyle: TextStyle(color: Colors.white),
-                              backgroundColor: kPrimaryColor,
-                              borderRadius: 15,
-                              onPressed: () {
-                                if (formKey.currentState!.validate()) {
-                                  ProfileCubit.get(context)
-                                      .resetPasswordRequest(
-                                          token: ApiConstants.token!,
-                                          email: emailController.text);
-                                }
-                              })
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
+      listener: (context, state) {
+        if (state is ResetPasswordRequestFailure) {
+          print('**********fail}');
+          showSnackBar(
+            context: context,
+            message: '${state.errMessage}',
+            color: Colors.red,
+          );
+        } else if (state is ResetPasswordRequestSuccess) {
+          print('valiid emaiiill');
+          GoRouter.of(context).push(
+            AppRouter.kChangePasswordConfirmView,
+            extra: {'cubit': BlocProvider.of<ProfileCubit>(context)},
+          );
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Change Password', style: Styles.textStyle18),
+            centerTitle: true,
           ),
-        ));
+          body: BlocBuilder<ProfileCubit, ProfileStates>(
+            builder: (context, state) {
+              if (state is ResetPasswordRequestLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 15,
+                  ),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Enter Your Email Address',
+                          style: Styles.textStyle14,
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextFormField(
+                          controller: emailController,
+                          hintText: 'Examble@gmail.com',
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return 'Email is required';
+                            } else {
+                              return null;
+                            }
+                          },
+                          hintTextStyle: TextStyle(color: Colors.grey),
+                        ),
+                        const Spacer(),
+                        CustomButton(
+                          width: double.infinity,
+                          text: 'Change Password',
+                          textStyle: TextStyle(color: Colors.white),
+                          backgroundColor: kPrimaryColor,
+                          borderRadius: 15,
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              ProfileCubit.get(context).resetPasswordRequest(
+                                token: ApiConstants.token!,
+                                email: emailController.text,
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

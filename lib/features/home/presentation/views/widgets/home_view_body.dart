@@ -1,13 +1,14 @@
 import 'package:cheif_homemade_food/constants.dart';
-import 'package:cheif_homemade_food/features/home/presentation/manager/home_cubit.dart';
-import 'package:cheif_homemade_food/features/home/presentation/manager/home_states.dart';
+import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_cubit.dart';
+import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_states.dart';
+import 'package:cheif_homemade_food/features/home/presentation/views/widgets/incoming_order/incoming_order_tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../../../core/utilities/api_constants.dart';
 import '../../../../../core/utilities/functions/show_snack_bar.dart';
 import '../../../../../core/utilities/styles.dart';
-import 'dishes_tab_view.dart';
+import 'dishes/dishes_tab_view.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -126,7 +127,7 @@ class HomeViewBody extends StatelessWidget {
                       }
                     },
                   ),
-                  const Center(child: Text("Incoming")),
+                  const Center(child: IncomingOrderTabView()),
                   const Center(child: Text("Preparing")),
                 ],
               ),

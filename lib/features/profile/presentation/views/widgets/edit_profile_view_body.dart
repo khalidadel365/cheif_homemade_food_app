@@ -70,12 +70,16 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
 
   void _onFieldChanged() {
     bool hasTextBeenChanged =
-        firstNameController.text != widget.user.userData!.accountInfo!.firstName ||
-            lastNameController.text != widget.user.userData!.accountInfo!.lastName ||
-            emailController.text != widget.user.userData!.accountInfo!.email ||
-            bioController.text != (widget.user.bio ?? "") ||
-            phoneController.text != (widget.user.userData!.accountInfo!.phone ?? "") ||
-            experienceController.text != (widget.user.yearsOfExperience?.toString() ?? "0");
+        firstNameController.text !=
+            widget.user.userData!.accountInfo!.firstName ||
+        lastNameController.text !=
+            widget.user.userData!.accountInfo!.lastName ||
+        emailController.text != widget.user.userData!.accountInfo!.email ||
+        bioController.text != (widget.user.bio ?? "") ||
+        phoneController.text !=
+            (widget.user.userData!.accountInfo!.phone ?? "") ||
+        experienceController.text !=
+            (widget.user.yearsOfExperience?.toString() ?? "0");
 
     setState(() {
       isChanged = hasTextBeenChanged;
@@ -102,7 +106,8 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
         if (state is EditProfileSuccess) {
           setState(() {
             isChanged = false;
-            updatedImageUrl = state.profileModel.userData?.accountInfo?.profilePicUrl;
+            updatedImageUrl =
+                state.profileModel.userData?.accountInfo?.profilePicUrl;
           });
           showSnackBar(
             context: context,
@@ -133,7 +138,9 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                     radius: 50,
                     backgroundColor: Colors.grey[200],
                     backgroundImage: NetworkImage(
-                      updatedImageUrl ?? widget.user.userData?.accountInfo?.profilePicUrl ?? "",
+                      updatedImageUrl ??
+                          widget.user.userData?.accountInfo?.profilePicUrl ??
+                          "",
                     ),
                   ),
                   GestureDetector(
@@ -227,16 +234,15 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               textInputType: TextInputType.text,
               readOnly: true,
               prefixIcon: const Icon(Icons.password),
-              suffixIcon: TextButton(onPressed: (){
-                GoRouter.of(context).push(
-                  AppRouter.kChangePasswordRequestView,
-                  extra: {
-                    'cubit': BlocProvider.of<ProfileCubit>(context),
-                  },
-                );
-              }, child: Text(
-                'Reset'
-              )) ,
+              suffixIcon: TextButton(
+                onPressed: () {
+                  GoRouter.of(context).push(
+                    AppRouter.kChangePasswordRequestView,
+                    extra: {'cubit': BlocProvider.of<ProfileCubit>(context)},
+                  );
+                },
+                child: Text('Reset'),
+              ),
             ),
             const SizedBox(height: 12),
             _buildFieldLabel("Years of Experience"),
@@ -250,43 +256,55 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
             BlocBuilder<ProfileCubit, ProfileStates>(
               builder: (context, state) {
                 return CustomButton(
-                  onPressed: (isChanged && state is! EditProfileLoading)
-                      ? () {
-                    final Map<String, dynamic> updatedData = {};
-                    if (firstNameController.text.trim() !=
-                        widget.user.userData!.accountInfo!.firstName) {
-                      updatedData["first_name"] = firstNameController.text.trim();
-                    }
-                    if (lastNameController.text.trim() !=
-                        widget.user.userData!.accountInfo!.lastName) {
-                      updatedData["last_name"] = lastNameController.text.trim();
-                    }
-                    if (emailController.text.trim() !=
-                        widget.user.userData!.accountInfo!.email) {
-                      updatedData["email"] = emailController.text.trim();
-                    }
-                    if (phoneController.text.trim() !=
-                        (widget.user.userData!.accountInfo!.phone ?? "")) {
-                      updatedData["phone_number"] = phoneController.text.trim();
-                    }
-                    if (bioController.text.trim() != (widget.user.bio ?? "")) {
-                      updatedData["bio"] = bioController.text.trim();
-                    }
-                    if (experienceController.text.trim() !=
-                        (widget.user.yearsOfExperience?.toString() ?? "0")) {
-                      updatedData["years_of_experience"] = experienceController.text.trim();
-                    }
+                  onPressed:
+                      (isChanged && state is! EditProfileLoading)
+                          ? () {
+                            final Map<String, dynamic> updatedData = {};
+                            if (firstNameController.text.trim() !=
+                                widget.user.userData!.accountInfo!.firstName) {
+                              updatedData["first_name"] =
+                                  firstNameController.text.trim();
+                            }
+                            if (lastNameController.text.trim() !=
+                                widget.user.userData!.accountInfo!.lastName) {
+                              updatedData["last_name"] =
+                                  lastNameController.text.trim();
+                            }
+                            if (emailController.text.trim() !=
+                                widget.user.userData!.accountInfo!.email) {
+                              updatedData["email"] =
+                                  emailController.text.trim();
+                            }
+                            if (phoneController.text.trim() !=
+                                (widget.user.userData!.accountInfo!.phone ??
+                                    "")) {
+                              updatedData["phone_number"] =
+                                  phoneController.text.trim();
+                            }
+                            if (bioController.text.trim() !=
+                                (widget.user.bio ?? "")) {
+                              updatedData["bio"] = bioController.text.trim();
+                            }
+                            if (experienceController.text.trim() !=
+                                (widget.user.yearsOfExperience?.toString() ??
+                                    "0")) {
+                              updatedData["years_of_experience"] =
+                                  experienceController.text.trim();
+                            }
 
-                    context.read<ProfileCubit>().editProfile(
-                      token: ApiConstants.token!,
-                      id: ApiConstants.id!,
-                      data: updatedData,
-                    );
-                  }
-                      : null,
+                            context.read<ProfileCubit>().editProfile(
+                              token: ApiConstants.token!,
+                              id: ApiConstants.id!,
+                              data: updatedData,
+                            );
+                          }
+                          : null,
                   backgroundColor: isChanged ? kPrimaryColor : Colors.grey,
                   borderRadius: 8,
-                  text: state is EditProfileLoading ? "Saving..." : "Save Changes",
+                  text:
+                      state is EditProfileLoading
+                          ? "Saving..."
+                          : "Save Changes",
                   textStyle: Styles.textStyle16.copyWith(color: Colors.white),
                 );
               },

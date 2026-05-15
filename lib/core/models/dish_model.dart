@@ -40,12 +40,13 @@ class DishModel {
   });
 
   factory DishModel.fromJson(Map<String, dynamic> json) {
-    final chefObject = json['chef'] != null ? ChefModel.fromJson(json['chef']) : null;
+    final chefObject =
+        json['chef'] != null ? ChefModel.fromJson(json['chef']) : null;
 
     String? rawImageUrl;
     if (json['images'] != null && (json['images'] as List).isNotEmpty) {
       var primaryImage = (json['images'] as List).firstWhere(
-            (img) => img['is_primary'] == true,
+        (img) => img['is_primary'] == true,
         orElse: () => (json['images'] as List)[0],
       );
 
@@ -64,7 +65,10 @@ class DishModel {
       if (rawImageUrl.contains('http')) {
         finalImageUrl = rawImageUrl;
       } else {
-        String cleanPath = rawImageUrl.startsWith('/') ? rawImageUrl.substring(1) : rawImageUrl;
+        String cleanPath =
+            rawImageUrl.startsWith('/')
+                ? rawImageUrl.substring(1)
+                : rawImageUrl;
         finalImageUrl = "${ApiConstants.baseUrl}$cleanPath";
       }
     }
@@ -81,16 +85,24 @@ class DishModel {
       chefName: json['chef_name'] as String? ?? chefObject?.fullName,
       chef: chefObject,
       imageUrl: finalImageUrl,
-      averageRating: (json['rating_avg'] ?? json['average_rating']) != null
-          ? double.tryParse((json['rating_avg'] ?? json['average_rating']).toString())
-          : null,
-      category: json['category'] != null ? CategoryModel.fromJson(json['category']) : null,
-      varietySections: (json['variety_sections'] as List?)
-          ?.map((e) => VarietySectionsModel.fromJson(e))
-          .toList(),
-      reviewsPreview: (json['reviews_preview'] as List?)
-          ?.map((e) => ReviewsPreviewModel.fromJson(e))
-          .toList(),
+      averageRating:
+          (json['rating_avg'] ?? json['average_rating']) != null
+              ? double.tryParse(
+                (json['rating_avg'] ?? json['average_rating']).toString(),
+              )
+              : null,
+      category:
+          json['category'] != null
+              ? CategoryModel.fromJson(json['category'])
+              : null,
+      varietySections:
+          (json['variety_sections'] as List?)
+              ?.map((e) => VarietySectionsModel.fromJson(e))
+              .toList(),
+      reviewsPreview:
+          (json['reviews_preview'] as List?)
+              ?.map((e) => ReviewsPreviewModel.fromJson(e))
+              .toList(),
     );
   }
 
