@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-class OrderModel {
+class OrderRequestedModel {
   final String? orderId;
   final String? customerName;
   final String? chefName;
@@ -10,7 +10,7 @@ class OrderModel {
   final int? itemsCount;
   final String? estimatedReadyTime;
 
-  OrderModel({
+  OrderRequestedModel({
     this.orderId,
     this.customerName,
     this.chefName,
@@ -22,7 +22,6 @@ class OrderModel {
   });
 
   String get displayOrderCode {
-    print("Order ID: $orderId");
     if (orderId == null || orderId!.isEmpty) return "ORD-UNKNOWN";
     String shortId = orderId!.length > 6
         ? orderId!.substring(0, 6).toUpperCase()
@@ -33,7 +32,7 @@ class OrderModel {
   String get formattedDate {
     if (createdAt == null || createdAt!.isEmpty) return "";
     try {
-      DateTime dateTime = DateTime.parse(createdAt!);
+      DateTime dateTime = DateTime.parse(createdAt!).toLocal();
       return DateFormat('MMM d, hh:mm a').format(dateTime);
     } catch (e) {
       return createdAt!;
@@ -53,8 +52,21 @@ class OrderModel {
     }
   }
 
-  factory OrderModel.fromJson(Map<String, dynamic> json) {
-    return OrderModel(
+  int get remainingSecondsToPrepare {
+    if (estimatedReadyTime == null || estimatedReadyTime!.isEmpty) return 0;
+    try {
+      final readyTime = DateTime.parse(estimatedReadyTime!).toLocal();
+      final now = DateTime.now();
+
+      final difference = readyTime.difference(now);
+      return difference.inSeconds > 0 ? difference.inSeconds : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  factory OrderRequestedModel.fromJson(Map<String, dynamic> json) {
+    return OrderRequestedModel(
       orderId: json['order_id'] as String?,
       customerName: json['customer_name'] as String?,
       chefName: json['chef_name'] as String?,

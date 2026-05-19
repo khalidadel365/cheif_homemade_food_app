@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 class OrderCountdownTimer extends StatefulWidget {
   final int initialSeconds;
+  Color? color;
 
-  const OrderCountdownTimer({
+  OrderCountdownTimer({
     super.key,
-    this.initialSeconds = 300, // القيمة الافتراضية 5 دقائق
+    this.initialSeconds = 300,
+    this.color,
   });
 
   @override
@@ -55,8 +57,8 @@ class _OrderCountdownTimerState extends State<OrderCountdownTimer> {
   Widget build(BuildContext context) {
     return Text(
       "${_formatTime(_remainingSeconds)} remaining",
-      style: const TextStyle(
-        color: Colors.red,
+      style: TextStyle(
+        color: widget.color ?? Colors.red,
         fontWeight: FontWeight.bold,
         fontSize: 14,
       ),

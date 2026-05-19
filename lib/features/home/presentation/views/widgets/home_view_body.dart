@@ -2,6 +2,7 @@ import 'package:cheif_homemade_food/constants.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_cubit.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/home/home_states.dart';
 import 'package:cheif_homemade_food/features/home/presentation/views/widgets/incoming_order/incoming_order_tab_view.dart';
+import 'package:cheif_homemade_food/features/home/presentation/views/widgets/preparing_order/preparing_order_tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -128,7 +129,7 @@ class HomeViewBody extends StatelessWidget {
                     },
                   ),
                   const Center(child: IncomingOrderTabView()),
-                  const Center(child: Text("Preparing")),
+                  const Center(child: PreparingOrderTabView()),
                 ],
               ),
             ),

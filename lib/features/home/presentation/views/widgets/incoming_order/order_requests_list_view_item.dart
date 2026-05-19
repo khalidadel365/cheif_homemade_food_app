@@ -2,14 +2,14 @@ import 'package:cheif_homemade_food/constants.dart';
 import 'package:cheif_homemade_food/core/utilities/api_constants.dart';
 import 'package:cheif_homemade_food/core/utilities/styles.dart';
 import 'package:cheif_homemade_food/core/widgets/custom_button.dart';
-import 'package:cheif_homemade_food/features/home/data/models/order_model.dart';
+import 'package:cheif_homemade_food/features/home/data/models/order_requested_model.dart';
 import 'package:cheif_homemade_food/features/home/presentation/manager/orders/orders_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'order_countdown_timer.dart';
 
 class OrderRequestsListViewItem extends StatelessWidget {
-  final OrderModel order;
+  final OrderRequestedModel order;
 
   const OrderRequestsListViewItem({super.key, required this.order});
 
@@ -46,7 +46,7 @@ class OrderRequestsListViewItem extends StatelessWidget {
             ),
           ),
           _buildTimerSection(),
-          _buildActionButtons(context), // باصينا الـ context هنا عشان الـ Cubit
+          _buildActionButtons(context),
         ],
       ),
     );

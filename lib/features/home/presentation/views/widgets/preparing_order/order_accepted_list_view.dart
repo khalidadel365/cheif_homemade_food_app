@@ -1,11 +1,12 @@
 import 'package:cheif_homemade_food/features/home/data/models/order_requested_model.dart'; // تأكد من المسار الصح للموديل
-import 'package:cheif_homemade_food/features/home/presentation/views/widgets/incoming_order/order_requests_list_view_item.dart';
 import 'package:flutter/material.dart';
 
-class OrderRequestsListView extends StatelessWidget {
+import 'order_accepted_list_view_item.dart';
+
+class OrderAcceptedListView extends StatelessWidget {
   final List<OrderRequestedModel> orders;
 
-  const OrderRequestsListView({super.key, required this.orders});
+  const OrderAcceptedListView({super.key, required this.orders});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class OrderRequestsListView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: OrderRequestsListViewItem(
+          child: OrderAcceptedListViewItem(
             order: orders[index],
           ),
         );

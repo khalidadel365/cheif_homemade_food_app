@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import '../../../../../core/utilities/api_constants.dart';
-import '../../../data/models/order_model.dart';
+import '../../../data/models/order_requested_model.dart';
 import '../../../data/models/order_socket_response.dart';
 import '../../../data/repos/home_repo.dart';
 import 'orders_states.dart';
@@ -13,17 +13,18 @@ class OrdersCubit extends Cubit<OrdersState> {
 
   OrdersCubit(this.homeRepo) : super(OrdersInitial());
 
-  void initSocket(String token) {
-    // Cancel any existing subscription before creating a new one
-    _ordersSubscription?.cancel();
+  List<OrderRequestedModel> incomingOrders = [];
+  List<OrderRequestedModel> preparingOrders = [];
 
+  void initSocket(String token) {
+    _ordersSubscription?.cancel();
     homeRepo.initOrdersSocket(token: token);
 
     _ordersSubscription = homeRepo.listenToOrders().listen((event) {
       if (!isClosed) {
         try {
           final Map<String, dynamic> responseMap =
-              event is String ? jsonDecode(event) : event;
+          event is String ? jsonDecode(event) : event;
           final socketResponse = OrderSocketResponse.fromJson(responseMap);
 
           if (socketResponse.type == 'new_order') {
@@ -32,7 +33,7 @@ class OrdersCubit extends Cubit<OrdersState> {
             emit(OrderCanceledSuccess(socketResponse.data));
           }
         } catch (e) {
-          print("Error parsing socket event: $e");
+          print("An Error has occurred");
         }
       }
     });
@@ -44,30 +45,51 @@ class OrdersCubit extends Cubit<OrdersState> {
     homeRepo.closeSocket();
     return super.close();
   }
-  List<OrderModel> orders = [];
 
   Future<void> getOrders({
     required String token,
     required String status,
   }) async {
-    emit(GetOrdersLoadingState());
+    // عدلنا الشرط هنا عشان يقبل 'accepted' اللي مبعوتة من الشاشة
+    if (status == 'pending') {
+      emit(GetIncomingOrdersLoadingState());
+    } else if (status == 'accepted') {
+      emit(GetPreparingOrdersLoadingState());
+    }
 
     var result = await homeRepo.getOrders(token: token, status: status);
 
     result.fold(
-          (failure) => emit(GetOrdersErrorState(failure.errorMessage)),
+          (failure) {
+        if (status == 'pending') {
+          emit(GetIncomingOrdersErrorState(failure.errorMessage));
+        } else if (status == 'accepted') { // عدلنا هنا كمان
+          emit(GetPreparingOrdersErrorState(failure.errorMessage));
+        }
+      },
           (ordersResponse) {
-        orders = ordersResponse;
-        emit(GetOrdersSuccessState(orders));
+        if (status == 'pending') {
+          incomingOrders = ordersResponse;
+          emit(GetIncomingOrdersSuccessState(incomingOrders));
+        } else if (status == 'accepted') { // عدلنا هنا لتخزين الـ accepted جوه لستة الـ preparing
+          preparingOrders = ordersResponse;
+          emit(GetPreparingOrdersSuccessState(preparingOrders));
+        }
       },
     );
   }
+
   void refreshOrders() {
     getOrders(
       token: ApiConstants.token!,
       status: 'pending',
     );
+    getOrders(
+      token: ApiConstants.token!,
+      status: 'accepted', // عدلنا دي من preparing لـ accepted عشان الـ token يروح للـ API الصح
+    );
   }
+
   Future<void> updateOrderStatus({
     required String token,
     required String orderId,

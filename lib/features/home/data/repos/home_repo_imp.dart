@@ -1,6 +1,6 @@
 import 'package:cheif_homemade_food/core/models/dish_model.dart';
 import 'package:cheif_homemade_food/features/home/data/models/dishes_response_model.dart';
-import 'package:cheif_homemade_food/features/home/data/models/order_model.dart';
+import 'package:cheif_homemade_food/features/home/data/models/order_requested_model.dart';
 import 'package:cheif_homemade_food/features/home/data/models/update_order_status_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -95,7 +95,7 @@ class HomeRepoImp implements HomeRepo {
   }
 
   @override
-  Future<Either<Failure, List<OrderModel>>> getOrders({
+  Future<Either<Failure, List<OrderRequestedModel>>> getOrders({
     required String token,
     required String status,
   }) async {
@@ -107,7 +107,7 @@ class HomeRepoImp implements HomeRepo {
 
       final List<dynamic> data = response as List;
 
-      final orders = data.map((orderJson) => OrderModel.fromJson(orderJson)).toList();
+      final orders = data.map((orderJson) => OrderRequestedModel.fromJson(orderJson)).toList();
 
       return right(orders);
     } catch (e) {

@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
-
-import '../../../data/models/order_model.dart';
+import '../../../data/models/order_requested_model.dart';
 import '../../../data/models/order_socket_model.dart';
 import '../../../data/models/update_order_status_model.dart';
 
@@ -37,18 +36,32 @@ class OrdersError extends OrdersState {
   OrdersError(this.errMessage);
 }
 
-class GetOrdersLoadingState extends OrdersState {}
+class GetIncomingOrdersLoadingState extends OrdersState {}
 
-class GetOrdersSuccessState extends OrdersState {
-  final List<OrderModel> orders;
+class GetIncomingOrdersSuccessState extends OrdersState {
+  final List<OrderRequestedModel> orders;
 
-  GetOrdersSuccessState(this.orders);
+  GetIncomingOrdersSuccessState(this.orders);
 }
 
-class GetOrdersErrorState extends OrdersState {
+class GetIncomingOrdersErrorState extends OrdersState {
   final String error;
 
-  GetOrdersErrorState(this.error);
+  GetIncomingOrdersErrorState(this.error);
+}
+
+class GetPreparingOrdersLoadingState extends OrdersState {}
+
+class GetPreparingOrdersSuccessState extends OrdersState {
+  final List<OrderRequestedModel> orders;
+
+  GetPreparingOrdersSuccessState(this.orders);
+}
+
+class GetPreparingOrdersErrorState extends OrdersState {
+  final String error;
+
+  GetPreparingOrdersErrorState(this.error);
 }
 
 class UpdateOrderStatusLoadingState extends OrdersState {}
