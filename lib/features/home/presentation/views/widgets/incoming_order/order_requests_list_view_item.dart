@@ -6,6 +6,8 @@ import 'package:cheif_homemade_food/features/home/data/models/order_requested_mo
 import 'package:cheif_homemade_food/features/home/presentation/manager/orders/orders_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../../core/utilities/app_router.dart';
 import 'order_countdown_timer.dart';
 
 class OrderRequestsListViewItem extends StatelessWidget {
@@ -15,39 +17,47 @@ class OrderRequestsListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 0.5,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 16),
-                Text(
-                  "${order.itemsCount ?? 0} Items ordered",
-                  style: const TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "${order.totalAmount ?? '0.00'} EGP",
-                  style: Styles.textStyle18.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
+    return InkWell(
+      onTap: (){
+        context.push(
+          AppRouter.kOrderDetailsView,
+          extra: order,
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 16),
+                  Text(
+                    "${order.itemsCount ?? 0} Items ordered",
+                    style: const TextStyle(fontSize: 14),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    "${order.totalAmount ?? '0.00'} EGP",
+                    style: Styles.textStyle18.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _buildTimerSection(),
-          _buildActionButtons(context),
-        ],
+            _buildTimerSection(),
+            _buildActionButtons(context),
+          ],
+        ),
       ),
     );
   }

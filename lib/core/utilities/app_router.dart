@@ -13,6 +13,7 @@ import '../../features/auth/presentation/views/signup_view.dart';
 import '../../features/home/data/models/order_requested_model.dart';
 import '../../features/home/presentation/manager/orders/orders_cubit.dart';
 import '../../features/home/presentation/manager/orders/orders_states.dart';
+import '../../features/order_details/presentation/views/order_details_view.dart';
 import '../../features/profile/presentation/manager/profile_cubit.dart';
 import '../../features/profile/presentation/views/change_password_confirm_view.dart';
 import '../../features/profile/presentation/views/change_password_request_view.dart';

@@ -6,6 +6,8 @@ import 'package:cheif_homemade_food/features/home/data/models/order_requested_mo
 import 'package:cheif_homemade_food/features/home/presentation/manager/orders/orders_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../../core/utilities/app_router.dart';
 import '../incoming_order/order_countdown_timer.dart';
 
 class OrderAcceptedListViewItem extends StatelessWidget {
@@ -15,22 +17,30 @@ class OrderAcceptedListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 0.5,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 12),
-            _buildTimerSection(),
-            const SizedBox(height: 12),
-            _buildActionButton(context),
-          ],
+    return InkWell(
+      onTap: (){
+        context.push(
+          AppRouter.kOrderDetailsView,
+          extra: order,
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 0.5,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 12),
+              _buildTimerSection(),
+              const SizedBox(height: 12),
+              _buildActionButton(context),
+            ],
+          ),
         ),
       ),
     );

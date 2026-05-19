@@ -50,7 +50,6 @@ class OrdersCubit extends Cubit<OrdersState> {
     required String token,
     required String status,
   }) async {
-    // عدلنا الشرط هنا عشان يقبل 'accepted' اللي مبعوتة من الشاشة
     if (status == 'pending') {
       emit(GetIncomingOrdersLoadingState());
     } else if (status == 'accepted') {
