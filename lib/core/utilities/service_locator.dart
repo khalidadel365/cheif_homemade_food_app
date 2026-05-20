@@ -1,6 +1,7 @@
 import 'package:cheif_homemade_food/features/add_dish/data/repos/add_dish_repo_imp.dart';
 import 'package:cheif_homemade_food/features/edit_dish/data/repos/edit_dish_repo_imp.dart';
 import 'package:cheif_homemade_food/features/home/data/repos/home_repo_imp.dart';
+import 'package:cheif_homemade_food/features/order_details/data/repos/order_details_repo_imp.dart'; // تأكد من المسار حسب الـ folder structure عندك
 import 'package:get_it/get_it.dart';
 import '../../features/auth/data/repos/auth_repo_imp.dart';
 
@@ -17,7 +18,7 @@ void setupServiceLocator() {
   getIt.registerSingleton(AuthRepoImp(getIt.get<ApiService>()));
   getIt.registerSingleton<OrdersSocketService>(OrdersSocketService());
   getIt.registerLazySingleton<OrdersCubit>(
-    () => OrdersCubit(getIt.get<HomeRepoImp>()),
+        () => OrdersCubit(getIt.get<HomeRepoImp>()),
   );
   getIt.registerSingleton(
     HomeRepoImp(getIt.get<ApiService>(), getIt.get<OrdersSocketService>()),
@@ -26,5 +27,8 @@ void setupServiceLocator() {
   getIt.registerSingleton(AddDishRepoImp(getIt.get<ApiService>()));
   getIt.registerSingleton<EditDishRepo>(
     EditDishRepoImp(getIt.get<ApiService>()),
+  );
+  getIt.registerSingleton<OrderDetailsRepoImpl>(
+    OrderDetailsRepoImpl(getIt.get<ApiService>()),
   );
 }
